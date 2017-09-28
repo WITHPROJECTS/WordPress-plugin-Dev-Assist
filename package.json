@@ -1,0 +1,23 @@
+{
+  "name": "gulp-runner",
+  "version": "1.0.0",
+  "description": "gulp sass develop env.",
+  "private": true,
+  "engines": {
+    "node": "^6.11.2",
+    "npm": "^5.3.0"
+  },
+  "scripts": {
+    "watch": "gulp watch",
+    "build": "gulp build",
+    "tasklist": "gulp -T",
+    "iconfont": "gulp iconfont"
+  },
+  "devDependencies": {
+    "withpro-gulp-js": "git+ssh://git@github.com/WITHPROJECTS/withpro-gulp-js.git",
+    "withpro-gulp-sass": "git+ssh://git@github.com/WITHPROJECTS/withpro-gulp-sass.git"
+  },
+  "author": "WITHPROJECTS inc.",
+  "homepage": "http://www.withprojects.co.jp/",
+  "license": "MIT"
+}

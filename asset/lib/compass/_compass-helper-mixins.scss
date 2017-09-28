@@ -1,0 +1,12 @@
+// =============================================================================
+// 背景
+// =============================================================================
+@mixin background-set($name,$retina:false){
+    $w         : if($retina, image-width($name) / 2, image-width($name));
+    $h         : if($retina, image-height($name) / 2, image-height($name));
+    display    : block;
+    width      : $w;
+    height     : $h;
+    background : image-url($name) no-repeat;
+    @if $retina{ @include background-size($w $h); }
+}

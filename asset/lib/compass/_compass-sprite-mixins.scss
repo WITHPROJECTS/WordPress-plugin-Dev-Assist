@@ -1,0 +1,29 @@
+// =============================================================================
+// 通常版
+// =============================================================================
+@mixin sprite-default-background($img,$url,$path,$name){
+    display    : block;
+    height     : image-height(sprite-file($img, $name));
+    width      : image-width(sprite-file($img, $name));
+    $pos       : sprite-position($img, $name);
+    $sprite-w  : image-width($path);
+    background : $url $pos no-repeat;
+}
+// =============================================================================
+// retina対応版
+// =============================================================================
+@mixin sprite-retina-background($img,$url,$path,$name){
+    display             : block;
+    height              : ceil(image-height(sprite-file($img, $name)) / 2);
+    width               : ceil(image-width(sprite-file($img, $name)) / 2);
+    $xpos               : ceil(nth(sprite-position($img, $name), 1) / 2);
+    $ypos               : ceil(nth(sprite-position($img, $name), 2) / 2);
+    background-image    : $img;
+    background-position : $xpos $ypos;
+    background-repeat   : no-repeat;
+    $wbgz : ceil(image-width(sprite-path($img)) / 2);
+    @include background-size($wbgz auto);
+    // $sprite-w  : image-width($path) / 2;
+    // background : $url 0 $ypos no-repeat;
+    // @include background-size($sprite-w auto);
+}
