@@ -64,6 +64,19 @@
       font-size : 12px
       opacity   : 0.6
     // -------------------------------------------------------------------------
+    a
+      color : #FFF
+      &:hover
+        text-decoration : none
+    // -------------------------------------------------------------------------
+    h2
+      color         : #FFF
+      font-size     : 30px
+      font-weight   : 100
+      line-height   : 1
+      margin-top    : 1.5em
+      margin-bottom : 0.4em
+    // -------------------------------------------------------------------------
     table
       width : 100%
       th
@@ -78,16 +91,9 @@
         padding        : 0.8em 0
         vertical-align : middle
   // ===========================================================================
-  // 設定タブ用のスタイル
+  // 動作設定タブ用のスタイル
   // ===========================================================================
   .wpda-box.setting
-    h2
-      color         : #FFF
-      font-size     : 30px
-      font-weight   : 100
-      line-height   : 1
-      margin-top    : 1.5em
-      margin-bottom : 0.4em
     table
       th
         padding-top : 1.25em
@@ -103,3 +109,40 @@
         padding-top : 0.2em
     input[type=submit]
       margin-top : 3em
+  // ===========================================================================
+  // PHPクラスタブ用のスタイル
+  // ===========================================================================
+  .wpda-box.php-class
+    display    : flex
+    max-height : 80vh
+    overflow   : auto
+    position   : relative
+    > ul
+      width         : 250px
+      box-sizing    : border-box
+      padding-right : 1em
+      li
+        line-height : 1
+        &:before
+          content : '-- '
+        a
+          display         : inline-block
+          padding         : 0.5em 0
+          text-decoration : none
+          &:hover
+            text-decoration : underline
+      > li + li
+        padding-top : 2em
+      > li > a
+        font-size : 18px
+      li ul
+        li
+          padding-left : 1em
+          a
+            font-size : 12px
+    // -------------------------------------------------------------------------
+    > div
+      flex-grow : 1
+      > div:first-child
+        h2
+          margin-top : 0

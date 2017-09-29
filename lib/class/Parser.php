@@ -9,13 +9,24 @@ class Parser {
 	 * 
 	 * @return [*]
 	 */
-	public static function to_html( $key, $data = null ) {
+	public static function data2html( $key, $data = null ) {
 		if ( is_array($key) && $data === null ) {
 			$data = [];
-			foreach( $key as $k => $v ) $data[ $k ] = Parser::to_html( $k, $v );
+			foreach( $key as $k => $v ) $data[ $k ] = Parser::data2html( $k, $v );
 			return $data;
 		}
-		
+
+		if ( $key === 'parent_id' ) {
+			if ( !preg_match( '/^[0-9]+$/s', $data ) || (int) $data <= 0 ) {
+				$data = '';
+			}
+		}
+		elseif ( $key === 'break_point' ) {
+			$data = esc_textarea( $data );
+		}
+		else {
+			$data = sanitize_text_field( $data );
+		}
 		return $data;
 	}
 	/**
@@ -23,7 +34,19 @@ class Parser {
 	 * parse form data to php data
 	 * 
 	 */
-	public static function to_data( $key, $data = null ) {
+	public static function form2data( $key, $data = null ) {
+		if ( is_array($key) && $data === null ) {
+			$data = [];
+			foreach( $key as $k => $v ) $data[ $k ] = Parser::form2data( $k, $v );
+			return $data;
+		}
+
+		if ( $key === 'parent_id' ) {
+			if ( !preg_match( '/^[0-9]+$/s', $data ) || (int) $data <= 0 ) {
+				$data = 0;
+			}
+			$data = (int) $data;
+		}
 		return $data;
 	}
 }

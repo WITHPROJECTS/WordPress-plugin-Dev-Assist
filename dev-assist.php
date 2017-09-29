@@ -10,12 +10,11 @@ Author URI: http://www.withprojects.co.jp/
 namespace dev_assist;
 
 $default_options = [
+	'site_path'     => '',
 	'domain'        => '',
+	'parent_id'     => 0,
 	'delete_option' => false,
-	'break_point'   => [
-		'small' => 'screen and (max-width: 500px)',
-		'large' => 'screen and (min-width: 501px)'
-	],
+	'break_point'   => '',
 	'ext_path'             => 'build',
 	'user_ext_path'        => 'user-src',
 	'img_dir_name'         => 'img',
@@ -29,6 +28,9 @@ $default_options = [
 	'comment_alert'        => true,              // コメント許可状態時にアラートを出力
 	'file_permision_alert' => true,              // ファイル権限がおかしいときにアラートを出力
 ];
+
+$default_options['break_point'] .= "'small'=>'screen and (max-width: 500px)'\n";
+$default_options['break_point'] .= "'large'=>'screen and (min-width: 501px)'";
 
 $plgin_data = get_file_data( __FILE__, ['version' => 'Version'] );
 
@@ -44,6 +46,17 @@ require_once( WPDA_DIR.'lib/class/Path.php' );
 require_once( WPDA_DIR.'lib/class/WP_Blogs.php' );
 require_once( WPDA_DIR.'lib/class/WP_Helper.php' );
 require_once( WPDA_DIR.'lib/class/WP_Path.php' );
+
+
+$opt = get_option( WPDA_DB_OPTIONS_NAME );
+
+WP_Path::setup([
+	'site_path'     => $opt['site_path'],
+	'ext_path'      => $opt['ext_path'],
+	'user_ext_path' => $opt['user_ext_path'],
+	'parent_id'     => $opt['parent_id']
+]);
+
 
 // =============================================================================
 // 専用CSS/JS追加

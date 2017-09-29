@@ -6,17 +6,17 @@
 //
 
 namespace dev_assist;
-include_once('Path.php');
-include_once('WP_Blogs.php');
-use withpro\func\WP_Blogs as WP_Blogs;
+
+include_once( __dir__.'/Path.php' );
+include_once( __dir__.'/WP_Blogs.php');
 
 class WP_Path extends Path{
 	private static $THEME_ROOT            = null;  // 「/」から始まるテーマディレクトリへのURL
 	private static $THEME_ROOT_URI        = null;  // 「http」から始まるテーマディレクトリへのURL
 	private static $PROTOCOL              = null;  // プロトコル「https://」か「http://」
-	private static $EXT_PATH_FROM_THEME   = null;  // 外部ファイルを置いているディレクトリ (アクティブなテーマ内から相対パス)
-	private static $USER_DIR              = null;  // 「/」から始まるユーザー用ディレクトリへのURL
-	private static $USER_DIR_URI          = null;  // 「http」から始まるユーザー用ディレクトリへのURL
+	private static $EXT_PATH_FROM_THEME_DIR   = null;  // 外部ファイルを置いているディレクトリ (アクティブなテーマ内から相対パス)
+	private static $USER_EXT_PATH              = null;  // 「/」から始まるユーザー用ディレクトリへのURL
+	private static $USER_EXT_PATH_URI          = null;  // 「http」から始まるユーザー用ディレクトリへのURL
 	private static $SITE_ROOT_FROM_WEB    = null;
 	private static $WEB_ROOT_URI          = null;
 	private static $REQUEST_URI           = null;  // リクエストされたページのURL
@@ -41,46 +41,69 @@ class WP_Path extends Path{
 			}
 		}
 	}
-	// =========================================================================
-	// 設定値の変更
-	// =========================================================================
-	public static function setup($param){
+	/**
+	 * 
+	 * WP_Pathの初期化
+	 * 設定値の変更などを行う
+	 *
+	 * @access  public
+	 * @version 0.0.1
+	 * @todo
+	 *  
+	 * @param  mixed[] $param {
+	 *   @type string 'site_path'     サイト
+	 *   @type string 'ext_path'      開発者用外部ファイルディレクトリ
+	 *   @type string 'user_ext_path' ユーザー用外部ファイルディレクトリ
+	 *   @type int    'parent_id'     親ブログのID
+	 * }
+	 * @return void
+	 */
+	public static function setup( $param ) {
+		$site_path     = $param['site_path'];
+		$user_ext_path = $param['user_ext_path'];
+		$ext_path      = $param['ext_path'];
+		$parent_id     = $param['parent_id'];
+		$domain        = $_SERVER['SERVER_NAME'];
 
-		$site_root_from_web = $param['site_root_from_web'];
-		$user_dir           = $param['user_dir'];
-		$set_ext_path       = $param['set_ext_path'];
-		$root_blog_id       = $param['root_blog_id'];
-		$domain             = $_SERVER['SERVER_NAME'];
+		// プロトコル
+		self::$PROTOCOL = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] ? 'https://' : 'http://';
 
-		self::$PROTOCOL       = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] ? 'https://' : 'http://';
-		self::$THEME_ROOT     = parent::join( get_theme_root() );
+		// WordPress wp-content/themesへのパス
+		self::$THEME_ROOT = parent::join( get_theme_root() );
+
+		// WordPress wp-content/themesへのURL
 		self::$THEME_ROOT_URI = parent::join( get_theme_root_uri() );
-		// ---------------------------------------------------------------------
-		// 外部ディレクトリ
-		// ---------------------------------------------------------------------
-		self::$EXT_PATH_FROM_THEME = $set_ext_path;
-		self::$WEB_ROOT_URI        = parent::join(self::$PROTOCOL,$domain);
-		// ---------------------------------------------------------------------
-		// ユーザー用ディレクトリ
-		// ---------------------------------------------------------------------
-		self::$USER_DIR     = parent::join($_SERVER['DOCUMENT_ROOT'],$site_root_from_web,$user_dir);
-		self::$USER_DIR_URI = parent::join(self::$WEB_ROOT_URI,$site_root_from_web,$user_dir);
-		// ---------------------------------------------------------------------
-		// ブログ情報取得
-		// ---------------------------------------------------------------------
-		self::$blogs = WP_Blogs::get_instance($root_blog_id);
-		self::$blogs->get_blog_data();
-		// ---------------------------------------------------------------------
-		// リクエストされたURLの設定
-		// ---------------------------------------------------------------------
-		$request_uri        = $_SERVER["REQUEST_URI"];
-		self::$QUERY_STRING = $_SERVER['QUERY_STRING'];
-		if(!empty(self::$QUERY_STRING)) $request_uri = str_replace('?'.self::$QUERY_STRING,'',$request_uri);
-		self::$REQUEST_URI = parent::join(self::$PROTOCOL,$domain,$request_uri);
-		$blog                        = self::$blogs->get_blog_data();
-		self::$REQUEST_URI_FROM_BLOG = str_replace($blog['url'],'',self::$REQUEST_URI);
-		// ---------------------------------------------------------------------
-		self::$setend = true;
+
+		// 開発者用外部ファイルディレクトリパス (テーマディレクトリからの相対パス)
+		self::$EXT_PATH_FROM_THEME_DIR = $ext_path;
+
+
+
+
+		// WEBルートURL
+		self::$WEB_ROOT_URI = parent::join( self::$PROTOCOL, $domain );
+
+		// 
+		self::$USER_EXT_PATH = parent::join( self::$WEB_ROOT_URI, $site_path, $user_ext_path );
+		var_dump(self::$USER_EXT_PATH);
+		
+		// self::$USER_EXT_PATH_URI = parent::join(self::$WEB_ROOT_URI,$site_path,$user_ext_path);
+		// // ---------------------------------------------------------------------
+		// // ブログ情報取得
+		// // ---------------------------------------------------------------------
+		// self::$blogs = WP_Blogs::get_instance($parent_id);
+		// self::$blogs->get_blog_data();
+		// // ---------------------------------------------------------------------
+		// // リクエストされたURLの設定
+		// // ---------------------------------------------------------------------
+		// $request_uri        = $_SERVER["REQUEST_URI"];
+		// self::$QUERY_STRING = $_SERVER['QUERY_STRING'];
+		// if(!empty(self::$QUERY_STRING)) $request_uri = str_replace('?'.self::$QUERY_STRING,'',$request_uri);
+		// self::$REQUEST_URI = parent::join(self::$PROTOCOL,$domain,$request_uri);
+		// $blog                        = self::$blogs->get_blog_data();
+		// self::$REQUEST_URI_FROM_BLOG = str_replace($blog['url'],'',self::$REQUEST_URI);
+		// // ---------------------------------------------------------------------
+		// self::$setend = true;
 	}
 	// =========================================================================
 	// 設定値の変更
@@ -122,17 +145,17 @@ class WP_Path extends Path{
 		// 「http」から始まるパス
 		if($uri){
 			if($where == 'theme'){
-				$dest = parent::join(self::$THEME_ROOT_URI,$blog,self::$EXT_PATH_FROM_THEME,$path);
+				$dest = parent::join(self::$THEME_ROOT_URI,$blog,self::$EXT_PATH_FROM_THEME_DIR,$path);
 			}else if($where == 'user'){
-				$dest = parent::join(self::$USER_DIR_URI,'themes',$blog,$path);
+				$dest = parent::join(self::$USER_EXT_PATH_URI,'themes',$blog,$path);
 			}
 		}
 		// 「/」から始まるパス
 		else{
 			if($where == 'theme'){
-				$dest = parent::join(self::$THEME_ROOT,$blog,self::$EXT_PATH_FROM_THEME,$path);
+				$dest = parent::join(self::$THEME_ROOT,$blog,self::$EXT_PATH_FROM_THEME_DIR,$path);
 			}else if($where == 'user'){
-				$dest = parent::join(self::$USER_DIR,'themes',$blog,$path);
+				$dest = parent::join(self::$USER_EXT_PATH,'themes',$blog,$path);
 			}
 		}
 		self::$path_cache_arr[$cache_key] = $dest;
@@ -331,8 +354,8 @@ class WP_Path extends Path{
 	// ユーザーディレクトリを返す
 	// =========================================================================
 	public static function get_user_dir($uri=false){
-		if($uri) return self::$USER_DIR_URI;
-		else return self::$USER_DIR;
+		if($uri) return self::$USER_EXT_PATH_URI;
+		else return self::$USER_EXT_PATH;
 	}
 	// =========================================================================
 	// URLを返す
