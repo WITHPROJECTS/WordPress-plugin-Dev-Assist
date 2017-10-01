@@ -3,7 +3,8 @@ namespace dev_assist;
 
 use dev_assist\Parser as Parser;
 
-$opt = get_option( WPDA_DB_OPTIONS_NAME );
+$db_manager = new WP_DB_manager( WPDA_MULTISITE, WPDA_DB_OPTIONS_NAME );
+$opt        = $db_manager->get();
 
 if ( isset($_POST['wpda_save']) ){
 	$opt['site_path']             = $_POST['wpda_site_path'];                                    // WEBルートからサイトまでの相対パス
@@ -23,15 +24,26 @@ if ( isset($_POST['wpda_save']) ){
 	$opt['alert']                 = $_POST['wpda_alert'];                                        // アラート出力
 	$opt['comment_alert']         = isset( $_POST['wpda_comment_alert'] ) ? true : false;        // コメント許可状態の場合アラート
 	$opt['file_permision_alert']  = isset( $_POST['wpda_file_permision_alert'] ) ? true : false; // 適切なファイル権限では無い場合アラート
-	
+
 	$opt = Parser::form2data($opt);
-	update_option( WPDA_DB_OPTIONS_NAME, $opt );
+	$db_manager->update( $opt );
+	// update_option( WPDA_DB_OPTIONS_NAME, $opt );
 }
 
 $opt = Parser::data2html($opt);
 
 ?>
 <div class="wrap">
+	<?php
+
+		WP_Path::src([
+			uri   => false,
+			where => 'theme',
+			blog  => 'child',
+			path  => ''
+		]);
+		// var_dump($PATH);
+	?>
 	<h1>Dev Assist v<?php echo WPDA_VERSION; ?></h1>
 	<div class="wpda-reset">
 		<ul class="wpda-tab">
@@ -95,7 +107,7 @@ $opt = Parser::data2html($opt);
 						<td>
 							<input type="text" name="wpda_user_ext_path" class="half-size" value="<?php echo $opt['user_ext_path']; ?>">
 							<p class="codicil">
-								WEBルートからの相対パス<br>
+								サイトからの相対パス<br>
 								現在のパス：
 							</p>
 						</td>
