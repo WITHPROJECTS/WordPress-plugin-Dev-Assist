@@ -12,6 +12,9 @@ if ( isset($_POST['wpda_save']) ){
 	$opt['parent_id']             = $_POST['wpda_parent_id'];                                    // 親ブログID
 	$opt['delete_option']         = isset( $_POST['wpda_delete_option'] ) ? true : false;        // プラグイン無効化時にDBから設定を削除する
 	$opt['break_point']           = $_POST['wpda_break_point'];                                  // ブレイクポイント
+	$opt['author_page_redirect']  = isset( $_POST['wpda_author_page_redirect'] ) ? true : false; // 著者ページリダイレクト
+	$opt['title_tag']             = isset( $_POST['wpda_title_tag'] ) ? true : false;            // 著者ページリダイレクト
+	$opt['show_admin_bar']        = isset( $_POST['wpda_show_admin_bar'] ) ? true : false;       // 管理バーの表示
 	$opt['ext_path']              = $_POST['wpda_ext_path'];                                     // 開発者用外部ファイルディレクトリ
 	$opt['user_ext_path']         = $_POST['wpda_user_ext_path'];                                // ユーザー用外部ファイルディレクトリ
 	$opt['img_dir_name']          = $_POST['wpda_img_dir_name'];                                 // 画像ディレクトリ名
@@ -21,6 +24,8 @@ if ( isset($_POST['wpda_save']) ){
 	$opt['font_dir_name']         = $_POST['wpda_font_dir_name'];                                // フォントファイルディレクトリ
 	$opt['emoji_block']           = isset( $_POST['wpda_emoji_block'] ) ? true : false;          // 絵文字タグブロック
 	$opt['oembed_block']          = isset( $_POST['wpda_oembed_block'] ) ? true : false;         // oEmbedタグブロック
+	$opt['feed_block']            = isset( $_POST['wpda_feed_block'] ) ? true : false;           // フィードタグブロック
+	$opt['canonical_block']       = isset( $_POST['wpda_canonical_block'] ) ? true : false;      // カノニカルタグブロック
 	$opt['alert']                 = $_POST['wpda_alert'];                                        // アラート出力
 	$opt['comment_alert']         = isset( $_POST['wpda_comment_alert'] ) ? true : false;        // コメント許可状態の場合アラート
 	$opt['file_permision_alert']  = isset( $_POST['wpda_file_permision_alert'] ) ? true : false; // 適切なファイル権限では無い場合アラート
@@ -80,6 +85,18 @@ $opt = Parser::data2html($opt);
 							</p>
 						</td>
 					</tr>
+					<tr>
+						<th>著者ページリダイレクト</th>
+						<td><input type="checkbox" name="wpda_author_page_redirect" <?php checked(true, $opt['author_page_redirect']); ?>></td>
+					</tr>
+					<tr>
+						<th>タイトルタグ出力</th>
+						<td><input type="checkbox" name="wpda_title_tag" <?php checked(true, $opt['title_tag']); ?>></td>
+					</tr>
+					<tr>
+						<th>管理バー表示</th>
+						<td><input type="checkbox" name="wpda_show_admin_bar" <?php checked(true, $opt['show_admin_bar']); ?>></td>
+					</tr>
 				</tbody>
 			</table>
 			<h2>PATH / DIRECTORY</h2>
@@ -137,6 +154,14 @@ $opt = Parser::data2html($opt);
 					<tr class="checkbox-item">
 						<th>oEmbedタグブロック</th>
 						<td><input type="checkbox" name="wpda_oembed_block" <?php checked(true, $opt['oembed_block']); ?>></td>
+					</tr>
+					<tr class="checkbox-item">
+						<th>Feedタグブロック</th>
+						<td><input type="checkbox" name="wpda_feed_block" <?php checked(true, $opt['feed_block']); ?>></td>
+					</tr>
+					<tr class="checkbox-item">
+						<th>カノニカルタグブロック</th>
+						<td><input type="checkbox" name="wpda_canonical_block" <?php checked(true, $opt['canonical_block']); ?>></td>
 					</tr>
 				</tbody>
 			</table>
