@@ -35,13 +35,6 @@ $opt = Parser::data2html($opt);
 ?>
 <div class="wrap">
 	<?php
-
-		WP_Path::src([
-			uri   => false,
-			where => 'theme',
-			blog  => 'child',
-			path  => ''
-		]);
 		// var_dump($PATH);
 	?>
 	<h1>Dev Assist v<?php echo WPDA_VERSION; ?></h1>

@@ -99,7 +99,8 @@ class WP_Path extends Path{
 		// リクエストされたURLの設定
 		$request_uri        = $_SERVER["REQUEST_URI"];
 		self::$QUERY_STRING = $_SERVER['QUERY_STRING'];
-		if( !empty( self::$QUERY_STRING ) ) $request_uri = str_replace( "?{self::$QUERY_STRING}", '', $request_uri );
+		if( !empty( self::$QUERY_STRING ) ) $request_uri = str_replace( '?'.self::$QUERY_STRING, '', $request_uri );
+
 		self::$REQUEST_URI = parent::join( self::$PROTOCOL, $domain, $request_uri );
 		$blog = self::$blogs->get_blog_data();
 		self::$REQUEST_URI_FROM_BLOG = str_replace( $blog['url'], '', self::$REQUEST_URI );
@@ -442,13 +443,14 @@ class WP_Path extends Path{
 // $wpda_src = WP_Path::get_src;
 
 // namespace \;
-
-function wpda_src( $param ) {
-	WP_Path::src( $param );
-}
-function wpda_get_src( $param ) {
-	return WP_Path::get_src( $param );
-}
+// 
+// function wpda_src( $param ) {
+// 	WP_Path::src( $param );
+// }
+// function wpda_get_src( $param ) {
+// 	return WP_Path::get_src( $param );
+// }
+use dev_assist\WP_Path as Path;
 // =============================================================================
 // エイリアス用関数
 // =============================================================================
