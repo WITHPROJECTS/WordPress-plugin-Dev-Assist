@@ -232,10 +232,10 @@ $opt = Parser::data2html($opt);
 			</ul>
 			<div>
 				<div>
-					<h2>dev_assist\UA</h2>
+					<h2>wpda_src( $param )</h2>
 				</div>
 				<div>
-					<h2>dev_assist\WP_Path</h2>
+					<h2>wpda_get_src( $param )</h2>
 				</div>
 			</div>
 		</div>

@@ -1,6 +1,6 @@
 <?php
 
-$default_options = [
+$default_option = [
 	'site_path'     => '',
 	'domain'        => '',
 	'parent_id'     => 1,

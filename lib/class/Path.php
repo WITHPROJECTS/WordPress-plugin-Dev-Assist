@@ -16,8 +16,8 @@ class Path{
 		$path = str_replace('{{ptcl_sep}}',':/',$path);
 		return $path;
 	}
-	/** 
-	 * 
+	/**
+	 *
 	 * パスの結合
 	 * パスを結合する際に不要なスラッシュを削除したり、相対的に指定したりできる
 	 *
@@ -26,7 +26,7 @@ class Path{
 	 */
 	public static function join(){
 		$opt  = [
-			'last_slash' => 'true'
+			'last_slash' => true
 		];
 		$args = func_get_args();
 		if(count($args) == 1 && empty($args[0])) return $args[0];
