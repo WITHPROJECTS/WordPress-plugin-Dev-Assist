@@ -57,7 +57,7 @@ require_once( WPDA_DIR.'lib/global-funcs.php' );
 // 専用CSS/JS追加
 add_action( 'admin_enqueue_scripts', function(){
 	wp_enqueue_style( 'dev-assist', WPDA_PATH.'asset/build/css/dev-assist.css' );
-	wp_enqueue_script( 'dev-assist', WPDA_PATH.'asset/build/js/dev-assist.js', ['jquery'], true );
+	wp_enqueue_script( 'dev-assist', WPDA_PATH.'asset/build/js/dev-assist.js', ['jquery'], false, true );
 } );
 // マルチサイトの場合の処理
 if ( defined('MULTISITE') && MULTISITE ) {

@@ -25,5 +25,5 @@ $default_option = [
 	'file_permision_alert' => true,              // ファイル権限がおかしいときにアラートを出力
 ];
 
-$default_options['break_point'] .= "small=>screen and (max-width: 500px)\n";
-$default_options['break_point'] .= "large=>screen and (min-width: 501px)";
+$default_option['break_point'] .= "small=>screen and (max-width: 500px)\n";
+$default_option['break_point'] .= "large=>screen and (min-width: 501px)";

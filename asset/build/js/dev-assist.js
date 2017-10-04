@@ -1,2 +1,2 @@
-
+(function($){var $root=$('.wpda-reset');if(!$root.length)return;{$tabs=$('.wpda-tab li a',$root);$cnts=$('.wpda-box',$root);$activeTab=false;$activeCnt=false;$cnts.addClass('deactive');$tabs.on('click',function(e){var $this=$(e.currentTarget);e.preventDefault();if($activeTab){$activeTab.removeClass('active');$cnts.addClass('deactive')}$activeTab=$this.parent();$activeTab.addClass('active');$('.wpda-box'+$this.attr('href').replace('#','.'),$root).removeClass('deactive')});$($tabs[0]).trigger('click')}})(jQuery);
 //# sourceMappingURL=dev-assist.js.map
