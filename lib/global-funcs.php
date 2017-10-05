@@ -2,16 +2,22 @@
 
 use dev_assist\WP_Path   as Path;
 use dev_assist\WP_Helper as Helper;
+use dev_assist\UA        as UA;
 
-
+// =============================================================================
+// 
+// Path
+// 
+// =============================================================================
 /**
  * 引数として与えられたパスを結合
  * 最後の引数のみオプションとして連想配列を渡せる
  * @version 0.0.1
  *
- * @param mixed[] ...$opt (optional) {
+ * @var   mixed[] ...$opt (optional) {
  *   @var boolean 'last_slash' パスの最後に/をつける
  * }
+ * @return string
  *
  */
 function wpda_join() {
@@ -23,7 +29,7 @@ function wpda_join() {
  * 指定されたパスかurlを返す
  * @version 0.0.1
  *
- * @param mixed[] $param {
+ * @var   mixed[] $param {
  *   @var boolean 'uri'  uriで出力する。falseの場合はパスを返す
  *   @var string 'where' 検索先を指定。"theme"か"user"
  *   @var string 'blog'  検索するブログディレクトリを指定。特殊なものとしてactive(利用中のテーマ), root(親ブログのテーマ)が利用可能
@@ -36,6 +42,7 @@ function wpda_get_src( $param ) {
 }
 /**
  * 指定されたパスかurlを出力
+ * @version 0.0.1
  * @see wpda_get_src()
  */
 function wpda_src( $param ) {
@@ -46,8 +53,8 @@ function wpda_src( $param ) {
  * テーマのURLを返す
  * @version 0.0.1
  *
- * @param  string $blog
- * @param  string $path
+ * @var    string $blog
+ * @var    string $path
  * @return string
  */
 function wpda_get_theme_url( $path = '',  $blog = 'active' ) {
@@ -61,7 +68,6 @@ function wpda_get_theme_url( $path = '',  $blog = 'active' ) {
 /**
  * テーマのURLを出力
  * @version 0.0.1
- *
  * @see wpda_get_theme_url()
  */
 function wpda_theme_url( $path = '',  $blog = 'active' ) {
@@ -72,8 +78,8 @@ function wpda_theme_url( $path = '',  $blog = 'active' ) {
  * テーマのパスを返す
  * @version 0.0.1
  *
- * @param  string $blog
- * @param  string $path
+ * @var    string $blog
+ * @var    string $path
  * @return string
  */
 function wpda_get_theme_path( $path = '',  $blog = 'active' ) {
@@ -98,8 +104,8 @@ function wpda_theme_path( $path = '',  $blog = 'active' ) {
  * ユーザーディレクトリのURLを返す
  * @version 0.0.1
  *
- * @param  string $blog
- * @param  string $path
+ * @var    string $blog
+ * @var    string $path
  * @return string
  */
 function wpda_get_user_url( $path = '',  $blog = 'active' ) {
@@ -124,8 +130,8 @@ function wpda_user_url( $path = '',  $blog = 'active' ) {
  * ユーザーディレクトリのパスを返す
  * @version 0.0.1
  *
- * @param  string $blog
- * @param  string $path
+ * @var    string $blog
+ * @var    string $path
  * @return string
  */
 function wpda_get_user_path( $path = '',  $blog = 'active' ) {
@@ -150,10 +156,10 @@ function wpda_user_path( $path = '',  $blog = 'active' ) {
  * ページ用素材のパスかurlを返す
  * @version 0.0.1
  *
- * @param  string  $dir_name ディレクトリ名
- * @param  boolean $url      trueでurl falseでパス
- * @param  string  $from      検索先の指定"theme"か"user"
- * @param  string  $path      検索先からのパス
+ * @var    string  $dir_name ディレクトリ名
+ * @var    boolean $url      trueでurl falseでパス
+ * @var    string  $from      検索先の指定"theme"か"user"
+ * @var    string  $path      検索先からのパス
  * @return string
  */
 function wpda_get_page( $dir_name, $url, $from, $path = '' ) {
@@ -183,11 +189,11 @@ function wpda_page( $dir_name, $url, $from, $path = '' ) {
  * ページ用画像のurlを返す
  * @version 0.0.1
  *
- * @param  string $from 検索先の指定"theme"か"user"
- * @param  string $path 検索先からのパス
+ * @var    string $from 検索先の指定"theme"か"user"
+ * @var    string $path 検索先からのパス
  * @return string
  */
-function wpda_get_page_img_url_from( $from, $path = '' ) {
+function wpda_get_page_img_url( $from, $path = '' ) {
 	$img_dir_name = Path::prop('IMAGE_DIR_NAME');
 	return wpda_get_page( $img_dir_name, true, $from, $path );
 }
@@ -195,21 +201,21 @@ function wpda_get_page_img_url_from( $from, $path = '' ) {
  * ページ用画像のurlを出力する
  * @version 0.0.1
  *
- * @see wpda_get_page_img_url_from()
+ * @see wpda_get_page_img_url()
  */
-function wpda_page_img_url_from( $from, $path = '' ) {
-	echo wpda_get_page_img_url_from( $from, $path );
+function wpda_page_img_url( $from, $path = '' ) {
+	echo wpda_get_page_img_url( $from, $path );
 }
 // -----------------------------------------------------------------------------
 /**
  * ページ用CSSのurlを返す
  * @version 0.0.1
  *
- * @param  string $from 検索先の指定"theme"か"user"
- * @param  string $path 検索先からのパス
+ * @var    string $from 検索先の指定"theme"か"user"
+ * @var    string $path 検索先からのパス
  * @return string
  */
-function wpda_get_page_css_url_from( $from, $path = '' ) {
+function wpda_get_page_css_url( $from, $path = '' ) {
 	$css_dir_name = Path::prop('CSS_DIR_NAME');
 	return wpda_get_page( $css_dir_name, true, $from, $path );
 }
@@ -217,21 +223,21 @@ function wpda_get_page_css_url_from( $from, $path = '' ) {
  * ページ用画像のurlを出力する
  * @version 0.0.1
  *
- * @see wpda_get_page_css_url_from()
+ * @see wpda_get_page_css_url()
  */
-function wpda_page_css_url_from( $from, $path = '' ) {
-	echo wpda_get_page_css_url_from( $from, $path );
+function wpda_page_css_url( $from, $path = '' ) {
+	echo wpda_get_page_css_url( $from, $path );
 }
 // -----------------------------------------------------------------------------
 /**
  * ページ用JSのurlを返す
  * @version 0.0.1
  *
- * @param  string $from 検索先の指定"theme"か"user"
- * @param  string $path 検索先からのパス
+ * @var    string $from 検索先の指定"theme"か"user"
+ * @var    string $path 検索先からのパス
  * @return string
  */
-function wpda_get_page_js_url_from( $from, $path = '' ) {
+function wpda_get_page_js_url( $from, $path = '' ) {
 	$js_dir_name = Path::prop('JS_DIR_NAME');
 	return wpda_get_page( $js_dir_name, true, $from, $path );
 }
@@ -239,21 +245,21 @@ function wpda_get_page_js_url_from( $from, $path = '' ) {
  * ページ用画像のurlを出力する
  * @version 0.0.1
  *
- * @see wpda_get_page_js_url_from()
+ * @see wpda_get_page_js_url()
  */
-function wpda_page_js_url_from( $from, $path = '' ) {
-	echo wpda_get_page_js_url_from( $from, $path );
+function wpda_page_js_url( $from, $path = '' ) {
+	echo wpda_get_page_js_url( $from, $path );
 }
 // -----------------------------------------------------------------------------
 /**
  * ページ用PHPのurlを返す
  * @version 0.0.1
  *
- * @param  string $from 検索先の指定"theme"か"user"
- * @param  string $path 検索先からのパス
+ * @var    string $from 検索先の指定"theme"か"user"
+ * @var    string $path 検索先からのパス
  * @return string
  */
-function wpda_get_page_php_path_from( $from, $path = '' ) {
+function wpda_get_page_php_path( $from, $path = '' ) {
 	$php_dir_name = Path::prop('PHP_DIR_NAME');
 	return wpda_get_page( $php_dir_name, false, $from, $path );
 }
@@ -261,17 +267,17 @@ function wpda_get_page_php_path_from( $from, $path = '' ) {
  * ページ用画像のurlを出力する
  * @version 0.0.1
  *
- * @see wpda_get_page_php_path_from()
+ * @see wpda_get_page_php_path()
  */
-function wpda_page_php_path_from( $from, $path = '' ) {
-	echo wpda_get_page_php_path_from( $from, $path );
+function wpda_page_php_path( $from, $path = '' ) {
+	echo wpda_get_page_php_path( $from, $path );
 }
 // -----------------------------------------------------------------------------
 /**
  * ブログのurlを返す
  * @version 0.0.1
  *
- * @param  string $blog_name
+ * @var    string $blog_name
  * @return string
  */
 function wpda_get_blog_url( $blog_name = 'active' ) {
@@ -306,4 +312,70 @@ function wpda_get_page_path() {
  */
 function wpda_page_path() {
 	echo wpda_get_page_path();
+}
+// =============================================================================
+// 
+// UA
+// 
+// =============================================================================
+/**
+ * UserAgentを返す
+ * @version 0.0.1
+ * 
+ * @return string
+ */
+function wpda_get_ua() {
+	return UA::get_ua();
+}
+// -----------------------------------------------------------------------------
+/**
+ * デバイス名を返す
+ * @version 0.0.1
+ * 
+ * @return string
+ */
+function wpda_get_device_name() {
+	return UA::get_device_name();
+}
+// -----------------------------------------------------------------------------
+/**
+ * スマホ環境かどうかを返す
+ * @version 0.0.1
+ * 
+ * @return boolean
+ */
+function wpda_is_smartphone() {
+	return UA::is_smartphone();
+}
+// -----------------------------------------------------------------------------
+/**
+ * タブレット環境かどうかを返す
+ * @version 0.0.1
+ * 
+ * @return boolean
+ */
+function wpda_is_tablet() {
+	return UA::is_tablet();
+}
+// -----------------------------------------------------------------------------
+/**
+ * PC環境かどうかを返す
+ * @version 0.0.1
+ * 
+ * @return boolean
+ */
+function wpda_is_pc() {
+	return UA::is_pc();
+}
+// =============================================================================
+// 
+// Helper
+// 
+// =============================================================================
+/**
+ * [function description]
+ * @var string $slug
+ */
+function wpda_slug2id( $slug ) {
+	return Helper::slug2id( $slug );
 }
