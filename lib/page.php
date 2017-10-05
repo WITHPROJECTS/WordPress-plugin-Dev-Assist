@@ -231,9 +231,9 @@ $opt = Parser::data2html($opt);
 				</li>
 			</ul>
 			<div>
-				<div>
+				<section>
 					<h2 id="join">wpda_join()</h2>
-					<code><pre>
+					<pre><code>
 引数として与えられたパスを結合
 最後の引数のみオプションとして連想配列を渡せる
 @version 0.0.1
@@ -241,11 +241,11 @@ $opt = Parser::data2html($opt);
 @param mixed[] ...$opt (optional) {
 	 @var boolean 'last_slash' パスの最後に/をつける
 }
-					</pre></code>
-				</div>
-				<div>
+					</code></pre>
+				</section>
+				<section>
 					<h2 id="get_src">wpda_get_src()</h2>
-					<code><pre>
+					<pre><code>
 指定されたパスかurlを返す
 @version 0.0.1
 
@@ -256,160 +256,148 @@ $opt = Parser::data2html($opt);
 	@var string 'path'  検索先からの相対パス
 }
 @return string
-					</pre></code>
-				</div>
-				<div>
+					</code></pre>
+				</section>
+				<section>
 					<h2 id="src">wpda_src()</h2>
-					<code><pre>
-					</pre></code>
-				</div>
-				<div>
+					<pre><code>
+					</code></pre>
+				</section>
+				<section>
 					<h2 id="get_theme_url">wpda_get_theme_url()</h2>
-					<code><pre>
-					</pre></code>
-				</div>
-				<div>
+					<pre><code>
+					</code></pre>
+				</section>
+				<section>
 					<h2 id="theme_url">wpda_theme_url()</h2>
-					<code><pre>
-					</pre></code>
-				</div>
-				<div>
+					<pre><code>
+					</code></pre>
+				</section>
+				<section>
 					<h2 id="get_theme_path">wpda_get_theme_path()</h2>
-					<code><pre>
-					</pre></code>
-				</div>
-				<div>
+					<pre><code>
+					</code></pre>
+				</section>
+				<section>
 					<h2 id="theme_path">wpda_theme_path()</h2>
-					<code><pre>
-					</pre></code>
-				</div>
-				<div>
+					<pre><code>
+					</code></pre>
+				</section>
+				<section>
 					<h2 id="get_user_url">wpda_get_user_url()</h2>
-					<code><pre>
-					</pre></code>
-				</div>
-				<div>
+					<pre><code>
+					</code></pre>
+				</section>
+				<section>
 					<h2 id="user_url">wpda_user_url()</h2>
-					<code><pre>
-					</pre></code>
-				</div>
-				<div>
+					<pre><code>
+					</code></pre>
+				</section>
+				<section>
 					<h2 id="get_user_path">wpda_get_user_path()</h2>
-					<code><pre>
-					</pre></code>
-				</div>
-				<div>
+					<pre><code>
+					</code></pre>
+				</section>
+				<section>
 					<h2 id="user_path">wpda_user_path()</h2>
-					<code><pre>
-					</pre></code>
-				</div>
-				<div>
+					<pre><code>
+					</code></pre>
+				</section>
+				<section>
 					<h2 id="get_page">wpda_get_page()</h2>
-					<code><pre>
-					</pre></code>
-				</div>
-				<div>
+					<pre><code>
+					</code></pre>
+				</section>
+				<section>
 					<h2 id="page">wpda_page()</h2>
-					<code><pre>
-					</pre></code>
-				</div>
-				<div>
+					<pre><code>
+					</code></pre>
+				</section>
+				<section>
 					<h2 id="get_page_img_url_from">wpda_get_page_img_url_from()</h2>
-					<code><pre>
-					</pre></code>
-				</div>
-				<div>
+					<pre><code>
+					</code></pre>
+				</section>
+				<section>
 					<h2 id="page_img_url_from">wpda_page_img_url_from()</h2>
-					<code><pre>
-					</pre></code>
-				</div>
-				<div>
+					<pre><code>
+					</code></pre>
+				</section>
+				<section>
 					<h2 id="get_page_css_url_from">wpda_get_page_css_url_from()</h2>
-					<code><pre>
-					</pre></code>
-				</div>
-				<div>
+					<pre><code>
+					</code></pre>
+				</section>
+				<section>
 					<h2 id="page_css_url_from">wpda_page_css_url_from()</h2>
-					<code><pre>
-					</pre></code>
-				</div>
-				<div>
+					<pre><code>
+					</code></pre>
+				</section>
+				<section>
 					<h2 id="get_page_js_url_from">wpda_get_page_js_url_from()</h2>
-					<code><pre>
-					</pre></code>
-				</div>
-				<div>
+					<pre><code>
+					</code></pre>
+				</section>
+				<section>
 					<h2 id="page_js_url_from">wpda_page_js_url_from()</h2>
-					<code><pre>
-					</pre></code>
-				</div>
-				<div>
-					<h2 id="get_page_php_url_from">wpda_get_page_php_url_from()</h2>
-					<code><pre>
-/**
- * ページ用PHPのurlを返す
- * @version 0.0.1
- *
- * @param  string $from 検索先の指定"theme"か"user"
- * @param  string $path 検索先からのパス
- * @return string
- */
-					</pre></code>
-				</div>
-				<div>
-					<h2 id="page_php_url_from">wpda_page_php_url_from()</h2>
-					<code><pre>
-/**
- * ページ用画像のurlを出力する
- * @version 0.0.1
- *
- * @see wpda_get_page_php_url_from()
- */
-					</pre></code>
-				</div>
-				<div>
-					<h2 id="get_blog_url">wpda_get_blog_url()</h2>
-					<code><pre>
-/**
- * ブログのurlを返す
- * @version 0.0.1
- *
- * @param  string $blog_name
- * @return string
- */
-					</pre></code>
-				</div>
-				<div>
-					<h2 id="blog_url">wpda_blog_url()</h2>
-					<code><pre>
-/**
- * ブログのurlを出力する
- * @version 0.0.1
- *
- * @see wpda_get_blog_url
- */
-					</pre></code>
-				</div>
-				<div>
+					<pre><code>
+					</code></pre>
+				</section>
+				<section>
+					<h2 id="get_page_php_url_from">wpda_get_page_php_url_from( $from, $path = '' )</h2>
+					<pre><code>
+ページ用PHPのurlを返す
+@version 0.0.1
+
+@param  string $from 検索先の指定"theme"か"user"
+@param  string $path 検索先からのパス
+@return string
+					</code></pre>
+				</section>
+				<section>
+					<h2 id="page_php_url_from">wpda_page_php_url_from( $from, $path = '' )</h2>
+					<pre><code>
+ページ用画像のurlを出力する
+@version 0.0.1
+
+@see wpda_get_page_php_url_from()
+					</code></pre>
+				</section>
+				<section>
+					<h2 id="get_blog_url">wpda_get_blog_url( $blog_name='active' )</h2>
+					<pre><code>
+ブログのurlを返す
+@version 0.0.1
+
+@param  string $blog_name
+@return string
+					</code></pre>
+				</section>
+				<section>
+					<h2 id="blog_url">wpda_blog_url( $blog_name='active' )</h2>
+					<pre><code>
+ブログのurlを出力する
+@version 0.0.1
+
+@see wpda_get_blog_url
+					</code></pre>
+				</section>
+				<section>
 					<h2 id="get_page_path">wpda_get_page_path()</h2>
-					<code><pre>
-/**
- * ページパスを返す
- * @version 0.0.1
- *
- * @return string
- */
-					</pre></code>
-				</div>
-				<div>
+					<pre><code>
+ページパスを返す
+@version 0.0.1
+
+@return string
+					</code></pre>
+				</section>
+				<section>
 					<h2 id="page_path">wpda_page_path()</h2>
-					<code><pre>
-/**
- * ページパスを出力
- * @see wpda_get_page_path()
- */
-					</pre></code>
-				</div>
+					<pre><code>
+ページパスを出力
+@see wpda_get_page_path()
+					</code></pre>
+				</section>
 			</div>
 		</div>
 	</div>

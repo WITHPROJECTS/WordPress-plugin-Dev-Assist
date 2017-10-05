@@ -30,7 +30,7 @@
       a
         color       : #FFF
         background  : $main-color
-          
+
 
   // ===========================================================================
   .wpda-box
@@ -39,6 +39,7 @@
     line-height : 1.3
     box-sizing  : border-box
     padding     : 2em
+    width       : 100%
     color       : #FFF
     &.deactive
       display : none
@@ -123,7 +124,7 @@
     &.deactive
       display : none
     > ul
-      width         : 250px
+      width         : 300px
       box-sizing    : border-box
       padding-right : 1em
       li
@@ -150,34 +151,25 @@
       flex-grow   : 1
       flex-shrink : 1
       width       : 100%
-      > div:first-child
+      overflow    : hidden
+      > section:first-child
         h2
           margin-top  : 0
-      > div
+      > section
         h2
-          font-size   : 28px
+          font-size   : 18px
           line-height : 1
-        // blockquote
-        //   white-space : pre
-        //   width       : 100%
-        //   overflow    : scroll
-        //   background : $base-color
-        //   color       : $text-color
-        //   font-family : 'Ricty'
-        code
-          display    : flex
+          margin-bottom : 0.6em
+        pre
+          display    : block
           background : $base-color
+          width      : 100%
+          padding    : 0 1em
           box-sizing : border-box
-          overflow   : hidden
-          pre
-            flex-grow   : 1
-            flex-shrink : 1
-            // white-space : pre
-            // display     : block
-            color       : $text-color
-            font-size   : 12px
-            line-height : 1.4
-            font-family : 'Ricty'
-            box-sizing  : border-box
-        //     overflow    : scroll
-        //     padding     : 0.5em
+          overflow   : scroll
+        code
+          white-space : pre
+          color       : $text-color
+          font-size   : 12px
+          line-height : 1.4
+          font-family : 'Ricty'

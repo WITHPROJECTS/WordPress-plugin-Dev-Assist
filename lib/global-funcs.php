@@ -253,7 +253,7 @@ function wpda_page_js_url_from( $from, $path = '' ) {
  * @param  string $path 検索先からのパス
  * @return string
  */
-function wpda_get_page_php_url_from( $from, $path = '' ) {
+function wpda_get_page_php_path_from( $from, $path = '' ) {
 	$php_dir_name = Path::prop('PHP_DIR_NAME');
 	return wpda_get_page( $php_dir_name, false, $from, $path );
 }
@@ -261,10 +261,10 @@ function wpda_get_page_php_url_from( $from, $path = '' ) {
  * ページ用画像のurlを出力する
  * @version 0.0.1
  *
- * @see wpda_get_page_php_url_from()
+ * @see wpda_get_page_php_path_from()
  */
-function wpda_page_php_url_from( $from, $path = '' ) {
-	echo wpda_get_page_php_url_from( $from, $path );
+function wpda_page_php_path_from( $from, $path = '' ) {
+	echo wpda_get_page_php_path_from( $from, $path );
 }
 // -----------------------------------------------------------------------------
 /**
