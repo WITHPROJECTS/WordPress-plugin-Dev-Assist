@@ -577,15 +577,29 @@ PC環境かどうかを返す
 				// Helper
 				// =============================================================
 				?>
+				<h2>Helper</h2>
 				<section>
-					<h3 id="is_pc">wpda_slug2id( $slug )</h2>
+					<h3 id="wpda_path2id">wpda_path2id( $path, $type='page' )</h2>
 					<pre><code>
-PC環境かどうかを返す
-@version 0.0.1
+スラッグを渡すとIDを返す
 
-@return boolean
+@var    string $path
+@var    string $type 投稿タイプ
+@return int
 					</code></pre>
 				</section>
+				<?php // ---------------------------------------------------- ?>
+				<section>
+					<h3 id="get_root_page">wpda_get_root_page( $id )</h2>
+					<pre><code>
+固定ページや投稿タイプの一番上のページ(ルートとなるページ)のオブジェクトを返す
+@version 0.0.1
+
+@param  int|WP_Post $id
+@return WP_Post
+					</code></pre>
+				</section>
+				<?php // ---------------------------------------------------- ?>
 			</div>
 		</div>
 	</div>

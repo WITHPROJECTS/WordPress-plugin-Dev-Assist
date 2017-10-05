@@ -1,279 +1,292 @@
 <?php
 namespace dev_assist;
 
+require_once(__dir__.'/WP_DB_manager.php');
 
 class WP_Helper{
-	// =========================================================================
-	// スラッグを渡すとそのスラッグのIDを返す
-	// =========================================================================
-	public static function slug2id($val){
-		$page = get_page_by_path($val);
+	/**
+	 * パスを渡すとそのスラッグのIDを返す
+	 * @access public
+	 * @version 0.0.1
+	 * 
+	 * @param  string $slug
+	 * @param  string $type
+	 * @return int|boolean
+	 */
+	public static function path2id( $path, $type = 'page' ) {
+		$page = get_page_by_path( $path, null, $type );
 		return $page ? $page->ID : false;
 	}
-	// =========================================================================
-	// 固定ページの一番上のページ(ルートとなるページ)のオブジェクトを返す
-	// 引数にはページオブジェクトか、ページID
-	// =========================================================================
-	public static function get_root_page($id){
-		$page = get_page($id);
-		while($page->post_parent) $page = get_page($page->post_parent);
-		return $page;
-	}
-	// =========================================================================
-	// 固定ページの一番上のページ(ルートとなるページ)のスラッグを返す
-	// 引数にはページオブジェクトか、ページID
-	// =========================================================================
-	public static function get_root_page_slug($id){
-		$page = get_page($id);
-		while($page->post_parent) $page = get_page($page->post_parent);
-		return $page->post_name;
-	}
-	// =========================================================================
-	// ルートカテゴリを返す
-	// 引数にはカテゴリオブジェクトか、カテゴリオブジェクトの配列
-	// =========================================================================
-	// Array / Object = get_root_category( $cat : Array / Object )
-	public static function get_root_category($cat){
-		// 配列の場合
-		if(is_array($cat)){
-			$cnt = count($cat);
-			for($i = 0;$i<$cnt;$i++){
-				while($cat[$i]->parent) $cat[$i] = get_category($cat[$i]->parent);
-			}
-		}
-		// カテゴリーオブジェクトの場合
-		elseif(is_object($cat)){
-			while($cat->parent) $cat = get_category($cat->parent);
-		}
-		return $cat;
-	}
-	// =========================================================================
-	// 引数で指定したページからそのページのルートとなるページまでの情報を配列で返す
-	// デフォルトでは最後に配列を反転させるのでルートページ->指定したページの順の配列になる
-	// =========================================================================
-	public static function get_page_history($id,$reverse=true){
-		$setArr = function($child){
-			$result_arr = array(
+	/**
+	 * 引数で指定したページからそのページのルートとなるページまでの情報を配列で返す
+	 * デフォルトでは最後に配列を反転させるのでルートページ->指定したページの順の配列になる
+	 * @access public
+	 * @version 0.0.1
+	 * 
+	 * @param  int|WP_Post $id
+	 * @param  boolean     $reverse 結果を反転させるか
+	 * @return array[]|false
+	 */
+	public static function get_post_history($id, $reverse=true ) {
+		$setArr = function( $child ) {
+			$result_arr = [
 				'id'         => $child->ID,
 				'post_name'  => $child->post_name,
 				'post_title' => $child->post_title,
-				'permalink'  => get_permalink($child->ID)
-			);
-			return apply_filters('get_page_history_format',$result_arr,$child);
+				'permalink'  => get_permalink( $child->ID )
+			];
+			return $result_arr;
 		};
-		// ---------------------------------------------------------------------
-		$page  = get_page($id);
-		$arr   = array($setArr($page));
-		while($page->post_parent){
-			$page  = get_page($page->post_parent);
-			$arr[] = $setArr($page);
+
+		$page  = get_post( $id );
+
+		if(!$page || $page->post_type === 'revision') return false;
+
+		$arr   = [ $setArr( $page ) ];
+
+		while( $page->post_parent ){
+			$page  = get_post( $page->post_parent );
+			$arr[] = $setArr( $page );
 		}
 		return $reverse ? array_reverse($arr) : $arr;
 	}
-	// =========================================================================
-	// 引数で指定したタームからそのタームのルートとなるタームまでの情報を配列で返す
-	// デフォルトでは最後に配列を反転させるのでルートターム->指定したタームの順の配列になる
-	// =========================================================================
-	public static function get_term_history($tax,$term,$reverse=true){
-		$term   = is_int($term) ? get_term($term,$tax) : $term;
-		$setArr = function($term,$tax){
-			$result_arr = array(
+	/**
+	 * 固定ページや投稿タイプの一番上のページ(ルートとなるページ)のオブジェクトを返す
+	 * @access public
+	 * @version 0.0.1
+	 * 
+	 * @param  int|WP_Post $id
+	 * @return WP_Post|false
+	 */
+	public static function get_root_post( $id ) {
+		$root = self::get_post_history( $id, true );
+		if ( !$root ) return false;
+		return get_post($root[0]['id']);
+	}
+	/**
+	 * 引数で指定したタームからそのタームのルートとなるタームまでの情報を配列で返す
+	 * デフォルトでは最後に配列を反転させるのでルートターム->指定したタームの順の配列になる
+	 * @access public
+	 * @version 0.0.1
+	 * 
+	 * @param  string             $tax
+	 * @param  string|int|WP_Term $term
+	 * @param  boolean            $reverse 結果を反転させるか
+	 * @return array[]|false
+	 */
+	public static function get_term_history( $tax, $term, $reverse=true ) {
+		if ( is_int( $term ) ) {
+			$term = get_term_by( 'term_id', $term, $tax );
+		}
+		elseif ( is_string( $term ) ) {
+			$term = get_term_by( 'slug', $term, $tax );
+		}
+
+		if( !$term ) return false;
+
+		$setArr = function( $term, $tax ) {
+			$result_arr = [
 				'id'        => $term->term_id,
 				'name'      => $term->name,
 				'slug'      => $term->slug,
 				'tax'       => $tax,
-				'permalink' => get_term_link($term->term_id,$tax)
-			);
-			return apply_filters('get_term_history_format',$result_arr,$term);
+				'permalink' => get_term_link( $term->term_id, $tax )
+			];
+			return $result_arr;
 		};
-		$arr = array($setArr($term,$tax));
-		while($term->parent){
-			$term  = get_term($term->parent,$tax);
-			$arr[] = $setArr($term,$tax);
+
+		$arr = [ $setArr( $term, $tax ) ];
+		while ( $term->parent ) {
+			$term  = get_term( $term->parent, $tax );
+			$arr[] = $setArr( $term, $tax );
 		}
-		return $reverse ? array_reverse($arr) : $arr;
+		return $reverse ? array_reverse( $arr ) : $arr;
 	}
-	// =========================================================================
-	// 引数で指定したカテゴリーからそのカテゴリーのルートとなるカテゴリーまでの情報を配列で返す
-	// デフォルトでは最後に配列を反転させるのでルートカテゴリー->指定したカテゴリーの順の配列になる
-	// =========================================================================
-	public static function get_category_history($cat,$reverse=true){
-		$cat   = !is_object($cat) ? get_term((int) $cat,'category') : $cat;
-		return Helper::get_term_history('category',$cat,$reverse);
-		//$setArr = function($cat){
-		//	$result_arr = array(
-		//		'id'        => $cat->term_id,
-		//		'name'      => $cat->name,
-		//		'slug'      => $cat->slug,
-		//		'permalink' => get_category_link($cat->term_id)
-		//	);
-		//	return apply_filters('get_category_history_format',$result_arr,$cat);
-		//};
-		//// ---------------------------------------------------------------------
-		//$cat = get_category($id);
-		//$arr = array($setArr($cat));
-		//while($cat->parent){
-		//	$cat   = get_category($cat->parent);
-		//	$arr[] = $setArr($cat);
-		//}
-		//return $reverse ? array_reverse($arr) : $arr;
+	/**
+	 * タームの一番上の親タームのオブジェクトを返す
+	 * @access public
+	 * @version 0.0.1
+	 * 
+	 * @param  string             $tax
+	 * @param  string|int|WP_Term $term
+	 * @return false
+	 */
+	public static function get_root_term( $tax, $term ) {
+		$root = self::get_term_history( $tax, $term, true );
+		if( !$root ) return false;
+		return get_term( $root[0]['id'] );
 	}
-	// =========================================================================
-	// ポストタイプの判定
-	// =========================================================================
-	// String = is_post_type( $name : String )
-	public static function is_post_type($name){
-		if(get_post_type() == $name) return true;
-		return false;
+	/**
+	 * タームが他のタームの「先祖」タームであるかどうかをチェック
+	 * @access public
+	 * @version 0.0.1
+	 * 
+	 * @param WP_Term|int|string $descendant 祖先
+	 * @param WP_Term|int|string $ancestor   先祖
+	 * @param string             $tax
+	 * @return boolean
+	 */
+	public static function is_tax_ancestor_of( $descendant, $ancestor, $tax ) {
+		if( is_int( $descendant ) ) {
+			$descendant = get_term_by( 'term_id', $descendant, $tax );
+		}
+		elseif( is_string( $descendant ) ) {
+			$descendant = get_term_by( 'slug', $descendant, $tax );
+		}
+		if( is_int( $ancestor ) ) {
+			$ancestor = get_term_by( 'term_id', $ancestor, $tax );
+		}
+		elseif( is_string( $ancestor ) ) {
+			$ancestor = get_term_by( 'slug', $ancestor, $tax );
+		}
+		
+		if ( !$ancestor || !$descendant ) return false;
+		
+		$list   = self::get_term_history( $tax, $descendant, true );
+		$result = false;
+		for ( $i = 0, $l = count( $list ); $i < $l; $i++ ) {
+			if ( $list[$i]['id'] === $ancestor->term_id ) {
+				$result = true;
+				break;
+			}
+		}
+		return $result;
 	}
-	// =========================================================================
-	// シングルページのポストタイプの判定
-	// =========================================================================
-	// String = is_single_type( $name : String )
-	public static function is_single_type($name){
-		if(is_single() && Helper::is_post_type($name)) return true;
-		return false;
-	}
-	// =========================================================================
-	// アーカイブページのポストタイプの判定
-	// =========================================================================
-	// String = is_archive_type( $name : String )
-	public static function is_archive_type($name){
-		if(is_archive() && Helper::is_post_type($name)) return true;
-		return false;
-	}
-	// =========================================================================
-	// 指定された親カテゴリに属するか否か
-	// 引数には親となるカテゴリのオブジェクトかカテゴリーID、スラッグを指定する
-	// =========================================================================
-	// Boolean = is_parent_cateogory($parent : Object | Int | String)
-	public static function is_parent_cateogory($parent){
-		if(is_string($parent)){
-			$parent = get_category_by_slug($parent);
-		}elseif(is_int($parent)){
-			$parent = get_category($parent);
+	/**
+	 * 投稿が他の投稿の「先祖」投稿であるかどうかをチェック
+	 * @access public
+	 * @version 0.0.1
+	 * 
+	 * @param  WP_Post|int|string  $descendant 祖先 stringの場合はパス
+	 * @param  WP_Post|int|string  $ancestor   先祖 stringの場合はパス
+	 * @param  string              $type       投稿タイプ $descendant,$ancestorにstring型を与えた場合のみ結果に影響
+	 * @return boolean
+	 */
+	public static function is_post_ancestor_of( $descendant, $ancestor, $type = 'page' ) {
+		if ( is_int( $descendant ) ) {
+			$descendant = get_post( $descendant );
+		}
+		elseif( is_string( $descendant ) ) {
+			$descendant = get_page_by_path( $descendant, null, $type );
+		}
+		if ( is_int( $ancestor ) ) {
+			$ancestor = get_post( $ancestor );
+		}
+		elseif( is_string( $ancestor ) ) {
+			$ancestor = get_page_by_path( $ancestor, null, $type );
 		}
 
-		if(is_object($parent)){
-			$parnet    = $parent->term_id;
-			$post_cats = get_the_category();
-			foreach($post_cats as $post) if( cat_is_ancestor_of( $parent, $post->term_id ) ){ return true; }
+		if ( !$ancestor || !$descendant ) return false;
+
+		$list   = self::get_post_history( $descendant, true );
+		$result = false;
+		for ( $i = 0, $l = count( $list ); $i < $l; $i++ ) {
+			if ( $list[$i]['id'] === $ancestor->ID ) {
+				$result = true;
+				break;
+			}
 		}
-		return false;
+		return $result;
 	}
-	// =========================================================================
-	// 指定された固定ページの親子関係か否か
-	// 引数には親となる固定ページのURIをルートから指定する
-	// 例えば、/sample/child/child-in-child で使用した場合
-	// Helper::in_page('sample')       // -> true
-	// Helper::in_page('sample/child') // -> true
-	// Helper::in_page('child')        // -> false
-	// =========================================================================
-	// Boolean = in_page($val : String)
-	public static function in_page($val = ''){
-		if(!is_page()) return false;
-		global $post;
-		$val     = preg_replace('/\/$/', '', $val);
-		$val     = preg_replace('/^\//', '', $val);
-		$valArr  = preg_split("/\//", $val);
-		$slugArr = array();
-		$not     = false;
-		$page    = get_page($post->ID);
-		while($page->post_parent){
-			$page      = get_page($page->post_parent);
-			$slugArr[] = $page->post_name;
+	/**
+	 * 子ページかチェック
+	 * @access public
+	 * @version 0.0.1
+	 *
+	 * @param  WP_Post|int|string $post
+	 * @param  string             $type 投稿タイプ $postにstring型を与えた場合のみ結果に影響
+	 * @return boolean
+	 */
+	public static function is_child_post( $post, $type='page' ) {
+		if ( !$post ) global $post;
+		if ( is_int( $post ) ){
+			$post = get_post( $post );
 		}
-		$slugArr = array_reverse($slugArr);
-		for($i=0,$l=count($valArr); $i<$l ;$i++){
-			if(!isset($slugArr[$i]) || $slugArr[$i] != $valArr[$i]) $not = true;
+		elseif ( is_string( $post ) ) {
+			$post = get_page_by_path( $post, null, $type );
 		}
-		if($not){
-			return false;
-		}else{
-			return true;
-		}
+		return $post->post_parent > 0 ? true : false;
 	}
-	// =========================================================================
-	// 子ページか否か
-	// =========================================================================
-	// Boolean = in_subpage()
-	public static function is_subpage(){
-		global $post;
-		if(is_page() && $post->post_parent){
-			$parentID   = $post->post_parent;
-			$parentSlug = get_page_uri($parentID);
-			return true;
-		}else{
-			return false;
+	/**
+	 * 子ページを持っているかチェック
+	 * @access public
+	 * @version 0.0.1
+	 * 
+	 * @param WP_Post|int|string $post
+	 * @param string             $type
+	 * @return boolean
+	 */
+	public static function has_child_page( $post, $type ) {
+		global $wpdb;
+		if ( !$post ) global $post;
+		if ( is_int( $post ) ){
+			$post = get_post( $post );
 		}
+		elseif ( is_string( $post ) ) {
+			$post = get_page_by_path( $post, null, $type );
+		}
+		if( !$post || !isset($post->ID) || !is_int($post->ID) ) return false;
+		$query = "SELECT post_parent FROM {$wpdb->posts} WHERE post_parent = {$post->ID} AND post_status = 'publish'";
+		return $wpdb->get_var($query) ? true : false;
 	}
 
-	// =========================================================================
-	// 子ページを持っているか否か
-	// =========================================================================
-	public static function has_subpage($other=false,$post=false){
-		if(!$post) global $post;
-		$temp     = $post;
-		$post     = $other ? $other : $post;
-		$children = get_pages('child_of='.$post->ID);
-		$post     = $temp;
-		if(count($children) != 0){
-			return true;
-		}else{
-			return false;
+
+	private static $media_queries = [];
+	public static function get_media_queries( $multisite, $name ) {
+		if ( empty( self::$mediaQueries ) ) {
+			$db_manager     = new WP_DB_manager( $multisite, $name );
+			$row_breakpoint = $db_manager->get()['break_point'];
+			if(empty())
 		}
-	}
-	// =========================================================================
-	// wp_enqueue_styleのヘルパー
-	// =========================================================================
-	private static $break_points = false;
-	public static function set_break_point($arr=false){
-		self::$break_points = $arr;
-	}
-	public static function custom_enqueue_style($handle=false,$src=false,$deps=[],$ver=false,$media=false,$size=false){
-		if(self::$break_points && $size && isset(self::$break_points[$size])){
-			$media = self::$break_points[$size];
-		}else{
-			$media = 'all';
+		if ( self::$mediaQueries === false ){
+			var_dump("ddd");
 		}
-		wp_enqueue_style($handle,$src,$deps,$ver,$media);
+		
+		// var_dump();
+		// var_dump($db_manager);
+		// $db_manager = new WP_DB_manager(WPDA_MULTISITE);
+		// new dev_assist\WP_DB_manager();
+		// var_dump();
 	}
-	// =========================================================================
-	// metaデータのセット
-	// =========================================================================
-	private static function set_meta_data(){
-		global $meta_data;
-		global $post;
-		$meta_data['setup'] = true;
-	}
-	public static function get_meta_keywords(){
-		global $meta_data;
-		if(!isset($meta_data['setup'])) Helper::set_meta_data();
-		return $meta_data['keyworkds'];
-	}
-	public static function get_meta_description(){
-		global $meta_data;
-		if(!isset($meta_data['setup'])) Helper::set_meta_data();
-		return $meta_data['description'];
-	}
-	// =========================================================================
-	// 空ページのリダイレクト
-	// =========================================================================
-	public static function when_blank_page_redirect(){
-		global $post;
-		if(is_page() && get_field('empty',$post->ID)){
-			$url = Helper::get_root_url();
-			header("Location: {$url}");
-			exit;
+	
+	/**
+	 * [enqueue_style description]
+	 * @param  string           $handle ハンドル名
+	 * @param  string           $src    パス
+	 * @param  string[]|boolean $deps   依存ファイル(ハンドル名で指定)
+	 * @param  string|boolean   $ver    バージョン
+	 * @param  string|boolean   $size   メディアクエリのサイズ
+	 * @param  string           $media  対象メディア デフォルトはall
+	 */
+	public static function enqueue_style( $handle, $src, $deps=false, $ver=false, $size=false, $media='all' ) {
+		if ( empty( self::$mediaQueries ) ) {
+			self::get_media_queries();
 		}
+		
 	}
-	public static function redirect_to_top(){
-		$url = Helper::get_root_url();
-		header("Location: {$url}");
-	}
-	public static function redirect_to($url){
-		header("Location: {$url}");
-	}
+
+
+	// // =========================================================================
+	// // wp_enqueue_styleのヘルパー
+	// // =========================================================================
+	// private static $break_points = false;
+	// public static function set_break_point($arr=false){
+	// 	self::$break_points = $arr;
+	// }
+	// public static function custom_enqueue_style($handle=false,$src=false,$deps=[],$ver=false,$media=false,$size=false){
+	// 	if(self::$break_points && $size && isset(self::$break_points[$size])){
+	// 		$media = self::$break_points[$size];
+	// 	}else{
+	// 		$media = 'all';
+	// 	}
+	// 	wp_enqueue_style($handle,$src,$deps,$ver,$media);
+	// }
+
+
+
+
+
+
 	// =========================================================================
 	//
 	// =========================================================================

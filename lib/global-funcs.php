@@ -373,9 +373,122 @@ function wpda_is_pc() {
 // 
 // =============================================================================
 /**
- * [function description]
- * @var string $slug
+ * パスを渡すとIDを返す
+ * @version 0.0.1
+ * 
+ * @var    string $slug
+ * @var    string $type 投稿タイプ
+ * @return int|boolean
  */
-function wpda_slug2id( $slug ) {
-	return Helper::slug2id( $slug );
+function wpda_path2id( $path, $type = 'page' ) {
+	return Helper::path2id( $path, $type );
+}
+// -----------------------------------------------------------------------------
+/**
+ * 引数で指定したページからそのページのルートとなるページまでの情報を配列で返す
+ * デフォルトでは最後に配列を反転させるのでルートページ->指定したページの順の配列になる
+ * @version 0.0.1
+ * 
+ * @var    int|WP_Post $id
+ * @var    boolean     $reverse 結果を反転させるか
+ * @return array[]|false
+ */
+function wpda_get_post_history( $id, $reverse = true ) {
+	return Helper::get_post_history( $id, $reverse );
+}
+// -----------------------------------------------------------------------------
+/**
+ * 固定ページや投稿タイプの一番上のページ(ルートとなるページ)のオブジェクトを返す
+ * @version 0.0.1
+ * 
+ * @var    int|WP_Post $id
+ * @return WP_Post
+ */
+function wpda_get_root_post( $id ) {
+	return Helper::get_root_post( $id );
+}
+// -----------------------------------------------------------------------------
+/**
+ * 引数で指定したタームからそのタームのルートとなるタームまでの情報を配列で返す
+ * デフォルトでは最後に配列を反転させるのでルートターム->指定したタームの順の配列になる
+ * @version 0.0.1
+ * 
+ * @var    string             $tax
+ * @var    string|int|WP_Term $term
+ * @var    boolean            $reverse 結果を反転させるか
+ * @return array[]|false
+ */
+function wpda_get_term_history( $tax, $term, $reverse = true ) {
+	return Helper::get_term_history( $tax, $term, $reverse );
+}
+// -----------------------------------------------------------------------------
+/**
+ * タームの一番上の親タームのオブジェクトを返す
+ * @version 0.0.1
+ * 
+ * @var    string             $tax
+ * @var    string|int|WP_Term $term
+ * @return false
+ */
+function wpda_get_root_term( $tax, $term ) {
+	return Helper::get_root_term( $tax, $term );
+}
+// -----------------------------------------------------------------------------
+/**
+ * タームが他のタームの「先祖」タームであるかどうかをチェック
+ * @version 0.0.1
+ * 
+ * @var    WP_Term|int|string $descendant 祖先
+ * @var    WP_Term|int|string $ancestor   先祖
+ * @var    string             $tax
+ * @return boolean
+ */
+function wpda_is_tax_ancestor_of( $descendant, $ancestor, $tax ) {
+	return Helper::is_tax_ancestor_of( $descendant, $ancestor, $tax );
+}
+// -----------------------------------------------------------------------------
+/**
+ * 投稿が他の投稿の「先祖」投稿であるかどうかをチェック
+ * @access public
+ * @version 0.0.1
+ * 
+ * @var    WP_Post|int|string  $descendant 祖先 stringの場合はパス
+ * @var    WP_Post|int|string  $ancestor   先祖 stringの場合はパス
+ * @var    string              $type       投稿タイプ $descendant,$ancestorにstring型を与えた場合のみ結果に影響
+ * @return boolean
+ */
+function wpda_is_post_ancestor_of( $descendant, $ancestor, $type = 'page' ) {
+	return Helper::is_post_ancestor_of( $descendant, $ancestor, $type );
+}
+// -----------------------------------------------------------------------------
+/**
+ * 子ページかチェック
+ * @version 0.0.1
+ *
+ * @param  WP_Post|int|string $post
+ * @param  string             $type 投稿タイプ $postにstring型を与えた場合のみ結果に影響
+ * @return boolean
+ */
+function wpda_is_child_post( $post, $type='page' ) {
+	return Helper::is_child_post( $post, $type );
+}
+// -----------------------------------------------------------------------------
+/**
+ * 子ページを持っているかチェック
+ * @version 0.0.1
+ * 
+ * @param WP_Post|int|string $post
+ * @param string             $type
+ * @return boolean
+ */
+function wpda_has_child_page( $post, $type ) {
+   return Helper::has_child_page( $post, $type );
+}
+
+function get_media_queries() {
+	return Helper::get_media_queries(WPDA_MULTISITE, WPDA_DB_OPTIONS_NAME);
+}
+
+function wpda_enqueue_style( $handle, $src, $deps=false, $ver=false, $size=false, $media='all' ) {
+	Helper::enqueue_style( $handle, $src, $deps, $ver, $size, $media );
 }
