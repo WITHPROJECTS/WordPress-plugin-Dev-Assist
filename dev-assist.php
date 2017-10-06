@@ -29,6 +29,7 @@ require_once( WPDA_DIR.'lib/class/WP_Helper.php' );
 require_once( WPDA_DIR.'lib/class/WP_Path.php' );
 require_once( WPDA_DIR.'lib/class/WP_DB_manager.php' );
 
+WP_Helper::set_media_queries( WPDA_MULTISITE, WPDA_DB_OPTIONS_NAME );
 $db_manager = new WP_DB_manager( WPDA_MULTISITE, WPDA_DB_OPTIONS_NAME );
 $opt        = $db_manager->get();
 
@@ -45,10 +46,9 @@ WP_Path::setup([
 		'font' => $opt['font_dir_name'],
 	]
 ]);
-// -----------------------------------------------------------------------------
-// グローバル関数の定義
-//
-require_once( WPDA_DIR.'lib/global-funcs.php' );
+
+require_once( WPDA_DIR.'lib/global-funcs.php' ); // グローバル関数の定義
+require_once( WPDA_DIR.'lib/shortcode.php' );    // ショートコードの定義
 
 // -----------------------------------------------------------------------------
 //

@@ -5,7 +5,7 @@ $default_option = [
 	'domain'        => '',
 	'parent_id'     => 1,
 	'delete_option' => false,
-	'break_point'   => '',
+	'media_query'   => '',
 	'ext_path'             => 'build',
 	'user_ext_path'        => 'user-src',
 	'img_dir_name'         => 'img',
@@ -25,5 +25,5 @@ $default_option = [
 	'file_permision_alert' => true,              // ファイル権限がおかしいときにアラートを出力
 ];
 
-$default_option['break_point'] .= "small=>screen and (max-width: 500px)\n";
-$default_option['break_point'] .= "large=>screen and (min-width: 501px)";
+$default_option['media_query'] .= "small=>screen and (max-width: 500px)\n";
+$default_option['media_query'] .= "large=>screen and (min-width: 501px)";

@@ -230,78 +230,54 @@ class WP_Helper{
 		return $wpdb->get_var($query) ? true : false;
 	}
 
-
-	private static $media_queries = [];
-	public static function get_media_queries( $multisite, $name ) {
-		if ( empty( self::$mediaQueries ) ) {
-			$db_manager     = new WP_DB_manager( $multisite, $name );
-			$row_breakpoint = $db_manager->get()['break_point'];
-			if(empty())
-		}
-		if ( self::$mediaQueries === false ){
-			var_dump("ddd");
-		}
-		
-		// var_dump();
-		// var_dump($db_manager);
-		// $db_manager = new WP_DB_manager(WPDA_MULTISITE);
-		// new dev_assist\WP_DB_manager();
-		// var_dump();
-	}
-	
 	/**
-	 * [enqueue_style description]
+	 * メディアクエリの設定
+	 * @access public
+	 * @version 0.0.1
+	 * 
+	 * @param  string $multisite
+	 * @param  string $name
+	 * @return void
+	 */
+	private static $media_queries = [];
+	public static function set_media_queries( $multisite, $name ) {
+		$db_manager        = new WP_DB_manager( $multisite, $name );
+		$row_media_queries = $db_manager->get()['media_query'];
+		if ( !$row_media_queries ) {
+			self::$media_queries = false;
+		} else {
+			$_media_queries = explode( "\n", $row_media_queries );
+			array_map( function( $val ) {
+				$val = explode( '=>', $val );
+				if ( count( $val ) === 2 ) {
+					$val = array_map( "trim", $val );
+					self::$media_queries[ $val[0] ] = $val[1];
+				}
+			}, $_media_queries );
+		}
+	}
+	/**
+	 * wp_enque_styleのラッパー　メディアクエリの設定を簡単にする
+	 * @access public
+	 * @version 0.0.1
+	 * 
 	 * @param  string           $handle ハンドル名
 	 * @param  string           $src    パス
 	 * @param  string[]|boolean $deps   依存ファイル(ハンドル名で指定)
 	 * @param  string|boolean   $ver    バージョン
-	 * @param  string|boolean   $size   メディアクエリのサイズ
-	 * @param  string           $media  対象メディア デフォルトはall
+	 * @param  string           $media  メディアクエリ デフォルトはall
+	 * @return void
 	 */
-	public static function enqueue_style( $handle, $src, $deps=false, $ver=false, $size=false, $media='all' ) {
-		if ( empty( self::$mediaQueries ) ) {
-			self::get_media_queries();
+	public static function enqueue_style( $handle, $src, $deps=false, $ver=false, $media='all' ) {
+		if ( !self::$media_queries ) {
+			$media = $media ? $media : 'all';
+		} else {
+			if ( isset( self::$media_queries[ $media ] ) ) {
+				$media = self::$media_queries[ $media ];
+			} else {
+				$media = 'all';
+			}
 		}
-		
+		wp_enqueue_style($handle, $src, $deps, $ver, $media);
 	}
-
-
-	// // =========================================================================
-	// // wp_enqueue_styleのヘルパー
-	// // =========================================================================
-	// private static $break_points = false;
-	// public static function set_break_point($arr=false){
-	// 	self::$break_points = $arr;
-	// }
-	// public static function custom_enqueue_style($handle=false,$src=false,$deps=[],$ver=false,$media=false,$size=false){
-	// 	if(self::$break_points && $size && isset(self::$break_points[$size])){
-	// 		$media = self::$break_points[$size];
-	// 	}else{
-	// 		$media = 'all';
-	// 	}
-	// 	wp_enqueue_style($handle,$src,$deps,$ver,$media);
-	// }
-
-
-
-
-
-
-	// =========================================================================
-	//
-	// =========================================================================
-	// public static function template($file){
-	//	global $PART_PATH;
-	//	preg_match('/^.\/([a-z]+.php)/',$file,$match);
-	//	if($match){
-	//		include_once(THEME_ROOT.'/'.THEME_DIR_NAME.'/'.$match[1]);
-	//	}else{
-	//		foreach($PART_PATH as $key => $val){
-	//			if(file_exists($val.$file)){
-	//				include_once($val.$file);
-	//				break;
-	//			}
-	//		}
-	//	}
-	// }
 }

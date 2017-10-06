@@ -21,7 +21,7 @@ class Parser {
 				$data = '';
 			}
 		}
-		elseif ( $key === 'break_point' ) {
+		elseif ( $key === 'media_query' ) {
 			$data = esc_textarea( $data );
 		}
 		else {

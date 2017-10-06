@@ -11,7 +11,7 @@ if ( isset($_POST['wpda_save']) ){
 	$opt['domain']               = $_POST['wpda_domain'];                                       // 本番環境ドメイン
 	$opt['parent_id']            = $_POST['wpda_parent_id'];                                    // 親ブログID
 	$opt['delete_option']        = isset( $_POST['wpda_delete_option'] ) ? true : false;        // プラグイン無効化時にDBから設定を削除する
-	$opt['break_point']          = $_POST['wpda_break_point'];                                  // ブレイクポイント
+	$opt['media_query']          = $_POST['wpda_media_query'];                                  // ブレイクポイント
 	$opt['author_page_redirect'] = isset( $_POST['wpda_author_page_redirect'] ) ? true : false; // 著者ページリダイレクト
 	$opt['title_tag']            = isset( $_POST['wpda_title_tag'] ) ? true : false;            // 著者ページリダイレクト
 	$opt['show_admin_bar']       = isset( $_POST['wpda_show_admin_bar'] ) ? true : false;       // 管理バーの表示
@@ -75,9 +75,9 @@ $opt = Parser::data2html($opt);
 						<td><input type="checkbox" name="wpda_delete_option" <?php checked(true, $opt['delete_option']); ?>></td>
 					</tr>
 					<tr>
-						<th>ブレイクポイント</th>
+						<th>メディアクエリ</th>
 						<td>
-							<textarea name="wpda_break_point"><?php echo $opt['break_point']; ?></textarea>
+							<textarea name="wpda_media_query"><?php echo $opt['media_query']; ?></textarea>
 							<p class="codicil">
 								↓フォーマット<br>
 								small=>screen and (max-width: 500px)<br>
@@ -193,6 +193,228 @@ $opt = Parser::data2html($opt);
 		ショートコード
 		//////////////////////////////////////////////////////////////////// -->
 		<div class="wpda-box shortcode">
+			<section>
+				<h2>[url blog="" path=""]</h2>
+				<p class="desc-text">
+					URLを出力する
+				</p>
+				<table>
+					<thead><tr>
+						<th>オプション</th>
+						<th>必須</th>
+						<th>初期値</th>
+						<th>備考</th>
+					</tr></thead>
+					<tbody>
+					<tr>
+						<td>blog</td>
+						<td></td>
+						<td>'active'</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>path</td>
+						<td></td>
+						<td>''</td>
+						<td>出力されたパスに追加するパス</td>
+					</tr>
+					</tbody>
+				</table>
+			</section>
+			<section>
+				<h2>[src url="" blog="" from="" dirname="" file=""]</h2>
+				<p class="desc-text">
+					ソースパスかurlを出力する
+				</p>
+				<table>
+					<thead><tr>
+						<th>オプション</th>
+						<th>必須</th>
+						<th>初期値</th>
+						<th>備考</th>
+					</tr></thead>
+					<tbody>
+					<tr>
+						<td>url</td>
+						<td></td>
+						<td>true</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>blog</td>
+						<td></td>
+						<td>'active'</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>from</td>
+						<td></td>
+						<td>'theme'</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>dir_name</td>
+						<td></td>
+						<td>''</td>
+						<td>動作設定で設定したディレクトリ名</td>
+					</tr>
+					<tr>
+						<td>file</td>
+						<td>◯</td>
+						<td>''</td>
+						<td></td>
+					</tr>
+					</tbody>
+				</table>
+			</section>
+			<section>
+				<h2>[img blog="" from="" (...HTML attr)]</h2>
+				<p class="desc-text">
+					imgタグを出力する<br>
+					imgタグのattributeが利用できる
+				</p>
+				<table>
+					<thead><tr>
+						<th>オプション</th>
+						<th>必須</th>
+						<th>初期値</th>
+						<th>備考</th>
+					</tr></thead>
+					<tbody>
+					<tr>
+						<td>blog</td>
+						<td></td>
+						<td>'active'</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>from</td>
+						<td></td>
+						<td>'theme'</td>
+						<td>検索対象 themeかuser</td>
+					</tr>
+					</tbody>
+				</table>
+			</section>
+			<section>
+				<h2>[img-url blog="" file="" from=""]</h2>
+				<p class="desc-text">画像のurlを出力する</p>
+				<table>
+					<thead><tr>
+						<th>オプション</th>
+						<th>必須</th>
+						<th>初期値</th>
+						<th>備考</th>
+					</tr></thead>
+					<tbody>
+					<tr>
+						<td>blog</td>
+						<td></td>
+						<td>'active'</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>file</td>
+						<td>◯</td>
+						<td></td>
+						<td>ファイルまでのパス</td>
+					</tr>
+					<tr>
+						<td>from</td>
+						<td></td>
+						<td>'theme'</td>
+						<td>検索対象 themeかuser</td>
+					</tr>
+					</tbody>
+				</table>
+			</section>
+			<section>
+				<h2>[page-img from="" (...HTML attr)]</h2>
+				<p class="desc-text">
+					ページ用画像を利用したimgタグを出力する<br>
+					imgタグのattributeが利用できる
+				</p>
+				<table>
+					<thead><tr>
+						<th>オプション</th>
+						<th>必須</th>
+						<th>初期値</th>
+						<th>備考</th>
+					</tr></thead>
+					<tbody>
+					<tr>
+						<td>from</td>
+						<td></td>
+						<td>'theme'</td>
+						<td>検索対象。themeかuser</td>
+					</tr>
+					</tbody>
+				</table>
+			</section>
+			<section>
+				<h2>[page-img-url file="" from=""]</h2>
+				<p class="desc-text">ページ用画像のurlを出力する</p>
+				<table>
+					<thead><tr>
+						<th>オプション</th>
+						<th>必須</th>
+						<th>初期値</th>
+						<th>備考</th>
+					</tr></thead>
+					<tbody>
+					<tr>
+						<td>file</td>
+						<td>◯</td>
+						<td></td>
+						<td>ファイルまでのパス</td>
+					</tr>
+					<tr>
+						<td>from</td>
+						<td></td>
+						<td>'theme'</td>
+						<td>検索対象。themeかuser</td>
+					</tr>
+					</tbody>
+				</table>
+			</section>
+			<section>
+				<h2>[php-include type="" blog="" file="" from=""]</h2>
+				<p class="desc-text">PHPファイルを読み込み</p>
+				<table>
+					<thead><tr>
+						<th>オプション</th>
+						<th>必須</th>
+						<th>初期値</th>
+						<th>備考</th>
+					</tr></thead>
+					<tbody>
+					<tr>
+						<td>type</td>
+						<td></td>
+						<td>'require_once'</td>
+						<td>"require", "require_once", "include", "include_once"</td>
+					</tr>
+					<tr>
+						<td>blog</td>
+						<td></td>
+						<td>'active'</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>file</td>
+						<td>◯</td>
+						<td></td>
+						<td>ファイルまでのパス</td>
+					</tr>
+					<tr>
+						<td>from</td>
+						<td></td>
+						<td>'theme'</td>
+						<td>検索対象。themeかuser</td>
+					</tr>
+					</tbody>
+				</table>
+			</section>
 		</div>
 		<!-- ///////////////////////////////////////////////////////////////////
 		関数
@@ -239,11 +461,26 @@ $opt = Parser::data2html($opt);
 						<li><a href="#is_pc">wpda_is_pc()</a></li>
 					</ul>
 				</li>
+				<li>
+					<a href="">Helper</a>
+					<ul>
+						<li><a href="#path2id">wpda_path2id()</a></li>
+						<li><a href="#get_post_history">wpda_get_post_history()</a></li>
+						<li><a href="#get_root_post">wpda_get_root_post()</a></li>
+						<li><a href="#get_term_history">wpda_get_term_history()</a></li>
+						<li><a href="#get_root_term">wpda_get_root_term()</a></li>
+						<li><a href="#is_tax_ancestor_of">wpda_is_tax_ancestor_of()</a></li>
+						<li><a href="#is_post_ancestor_of">wpda_is_post_ancestor_of()</a></li>
+						<li><a href="#is_child_post">wpda_is_child_post()</a></li>
+						<li><a href="#has_child_page">wpda_has_child_page()</a></li>
+						<li><a href="#enqueue_style">wpda_enqueue_style()</a></li>
+					</ul>
+				</li>
 			</ul>
 			<div>
 				<h2>Path</h2>
 				<section>
-					<h3 id="join">wpda_join()</h2>
+					<h3 id="join">wpda_join()</h3>
 					<pre><code>
 引数として与えられたパスを結合
 最後の引数のみオプションとして連想配列を渡せる
@@ -257,7 +494,7 @@ $opt = Parser::data2html($opt);
 				</section>
 				<?php // ---------------------------------------------------- ?>
 				<section>
-					<h3 id="get_src">wpda_get_src( $param )</h2>
+					<h3 id="get_src">wpda_get_src( $param )</h3>
 					<pre><code>
 指定されたパスかurlを返す
 @version 0.0.1
@@ -273,7 +510,7 @@ $opt = Parser::data2html($opt);
 				</section>
 				<?php // ---------------------------------------------------- ?>
 				<section>
-					<h3 id="src">wpda_src( $param )</h2>
+					<h3 id="src">wpda_src( $param )</h3>
 					<pre><code>
 指定されたパスかurlを出力
 @version 0.0.1
@@ -282,7 +519,7 @@ $opt = Parser::data2html($opt);
 				</section>
 				<?php // ---------------------------------------------------- ?>
 				<section>
-					<h3 id="get_theme_url">wpda_get_theme_url( $path='', $blog='active' )</h2>
+					<h3 id="get_theme_url">wpda_get_theme_url( $path='', $blog='active' )</h3>
 					<pre><code>
 テーマのURLを返す
 @version 0.0.1
@@ -294,7 +531,7 @@ $opt = Parser::data2html($opt);
 				</section>
 				<?php // ---------------------------------------------------- ?>
 				<section>
-					<h3 id="theme_url">wpda_theme_url( $path='', $blog='active' )</h2>
+					<h3 id="theme_url">wpda_theme_url( $path='', $blog='active' )</h3>
 					<pre><code>
 テーマのURLを出力
 @version 0.0.1
@@ -303,7 +540,7 @@ $opt = Parser::data2html($opt);
 				</section>
 				<?php // ---------------------------------------------------- ?>
 				<section>
-					<h3 id="get_theme_path">wpda_get_theme_path( $path='', $blog='active' )</h2>
+					<h3 id="get_theme_path">wpda_get_theme_path( $path='', $blog='active' )</h3>
 					<pre><code>
 テーマのパスを返す
 @version 0.0.1
@@ -315,7 +552,7 @@ $opt = Parser::data2html($opt);
 				</section>
 				<?php // ---------------------------------------------------- ?>
 				<section>
-					<h3 id="theme_path">wpda_theme_path( $path='', $blog='active' )</h2>
+					<h3 id="theme_path">wpda_theme_path( $path='', $blog='active' )</h3>
 					<pre><code>
 テーマへのパスを出力
 @version 0.0.1
@@ -325,7 +562,7 @@ $opt = Parser::data2html($opt);
 				</section>
 				<?php // ---------------------------------------------------- ?>
 				<section>
-					<h3 id="get_user_url">wpda_get_user_url( $path='', $blog='active' )</h2>
+					<h3 id="get_user_url">wpda_get_user_url( $path='', $blog='active' )</h3>
 					<pre><code>
 ユーザーディレクトリのURLを返す
 @version 0.0.1
@@ -337,7 +574,7 @@ $opt = Parser::data2html($opt);
 				</section>
 				<?php // ---------------------------------------------------- ?>
 				<section>
-					<h3 id="user_url">wpda_user_url( $path='',  $blog='active' )</h2>
+					<h3 id="user_url">wpda_user_url( $path='',  $blog='active' )</h3>
 					<pre><code>
 ユーザーディレクトリのURLを出力
 @version 0.0.1
@@ -346,7 +583,7 @@ $opt = Parser::data2html($opt);
 				</section>
 				<?php // ---------------------------------------------------- ?>
 				<section>
-					<h3 id="get_user_path">wpda_get_user_path( $path='',  $blog='active' )</h2>
+					<h3 id="get_user_path">wpda_get_user_path( $path='',  $blog='active' )</h3>
 					<pre><code>
 ユーザーディレクトリのパスを返す
 @version 0.0.1
@@ -358,7 +595,7 @@ $opt = Parser::data2html($opt);
 				</section>
 				<?php // ---------------------------------------------------- ?>
 				<section>
-					<h3 id="user_path">wpda_user_path( $path='', $blog='active' )</h2>
+					<h3 id="user_path">wpda_user_path( $path='', $blog='active' )</h3>
 					<pre><code>
 ユーザーディレクトリのパスを出力
 @version 0.0.1
@@ -368,7 +605,7 @@ $opt = Parser::data2html($opt);
 				</section>
 				<?php // ---------------------------------------------------- ?>
 				<section>
-					<h3 id="get_page">wpda_get_page( $dir_name, $url, $from, $path='' )</h2>
+					<h3 id="get_page">wpda_get_page( $dir_name, $url, $from, $path='' )</h3>
 					<pre><code>
 ページ用素材のパスかurlを返す
 @version 0.0.1
@@ -382,7 +619,7 @@ $opt = Parser::data2html($opt);
 				</section>
 				<?php // ---------------------------------------------------- ?>
 				<section>
-					<h3 id="page">wpda_page( $dir_name, $url, $from, $path='' )</h2>
+					<h3 id="page">wpda_page( $dir_name, $url, $from, $path='' )</h3>
 					<pre><code>
 ページ用素材のパスかurlを出力する
 @version 0.0.1
@@ -392,7 +629,7 @@ $opt = Parser::data2html($opt);
 				</section>
 				<?php // ---------------------------------------------------- ?>
 				<section>
-					<h3 id="get_page_img_url">wpda_get_page_img_url( $from, $path='' )</h2>
+					<h3 id="get_page_img_url">wpda_get_page_img_url( $from, $path='' )</h3>
 					<pre><code>
 ページ用画像のurlを返す
 @version 0.0.1
@@ -404,7 +641,7 @@ $opt = Parser::data2html($opt);
 				</section>
 				<?php // ---------------------------------------------------- ?>
 				<section>
-					<h3 id="page_img_url">wpda_page_img_url( $from, $path='' )</h2>
+					<h3 id="page_img_url">wpda_page_img_url( $from, $path='' )</h3>
 					<pre><code>
 ページ用画像のurlを出力する
 @version 0.0.1
@@ -414,7 +651,7 @@ $opt = Parser::data2html($opt);
 				</section>
 				<?php // ---------------------------------------------------- ?>
 				<section>
-					<h3 id="get_page_css_url">wpda_get_page_css_url( $from, $path='' )</h2>
+					<h3 id="get_page_css_url">wpda_get_page_css_url( $from, $path='' )</h3>
 					<pre><code>
 ページ用CSSのurlを返す
 @version 0.0.1
@@ -426,7 +663,7 @@ $opt = Parser::data2html($opt);
 				</section>
 				<?php // ---------------------------------------------------- ?>
 				<section>
-					<h3 id="page_css_url">wpda_page_css_url( $from, $path='' )</h2>
+					<h3 id="page_css_url">wpda_page_css_url( $from, $path='' )</h3>
 					<pre><code>
 ページ用画像のurlを出力する
 @version 0.0.1
@@ -436,7 +673,7 @@ $opt = Parser::data2html($opt);
 				</section>
 				<?php // ---------------------------------------------------- ?>
 				<section>
-					<h3 id="get_page_js_url">wpda_get_page_js_url( $from, $path = '' )</h2>
+					<h3 id="get_page_js_url">wpda_get_page_js_url( $from, $path = '' )</h3>
 					<pre><code>
 ページ用JSのurlを返す
 @version 0.0.1
@@ -448,7 +685,7 @@ $opt = Parser::data2html($opt);
 				</section>
 				<?php // ---------------------------------------------------- ?>
 				<section>
-					<h3 id="page_js_url">wpda_page_js_url( $from, $path = '' )</h2>
+					<h3 id="page_js_url">wpda_page_js_url( $from, $path = '' )</h3>
 					<pre><code>
 ページ用画像のurlを出力する
 @version 0.0.1
@@ -458,7 +695,7 @@ $opt = Parser::data2html($opt);
 				</section>
 				<?php // ---------------------------------------------------- ?>
 				<section>
-					<h3 id="get_page_php_path">wpda_get_page_php_path( $from, $path = '' )</h2>
+					<h3 id="get_page_php_path">wpda_get_page_php_path( $from, $path = '' )</h3>
 					<pre><code>
 ページ用PHPのurlを返す
 @version 0.0.1
@@ -470,7 +707,7 @@ $opt = Parser::data2html($opt);
 				</section>
 				<?php // ---------------------------------------------------- ?>
 				<section>
-					<h3 id="page_php_path">wpda_page_php_path( $from, $path = '' )</h2>
+					<h3 id="page_php_path">wpda_page_php_path( $from, $path = '' )</h3>
 					<pre><code>
 ページ用画像のurlを出力する
 @version 0.0.1
@@ -480,7 +717,7 @@ $opt = Parser::data2html($opt);
 				</section>
 				<?php // ---------------------------------------------------- ?>
 				<section>
-					<h3 id="get_blog_url">wpda_get_blog_url( $blog_name='active' )</h2>
+					<h3 id="get_blog_url">wpda_get_blog_url( $blog_name='active' )</h3>
 					<pre><code>
 ブログのurlを返す
 @version 0.0.1
@@ -491,7 +728,7 @@ $opt = Parser::data2html($opt);
 				</section>
 				<?php // ---------------------------------------------------- ?>
 				<section>
-					<h3 id="blog_url">wpda_blog_url( $blog_name='active' )</h2>
+					<h3 id="blog_url">wpda_blog_url( $blog_name='active' )</h3>
 					<pre><code>
 ブログのurlを出力する
 @version 0.0.1
@@ -501,7 +738,7 @@ $opt = Parser::data2html($opt);
 				</section>
 				<?php // ---------------------------------------------------- ?>
 				<section>
-					<h3 id="get_page_path">wpda_get_page_path()</h2>
+					<h3 id="get_page_path">wpda_get_page_path()</h3>
 					<pre><code>
 ページパスを返す
 @version 0.0.1
@@ -511,7 +748,7 @@ $opt = Parser::data2html($opt);
 				</section>
 				<?php // ---------------------------------------------------- ?>
 				<section>
-					<h3 id="page_path">wpda_page_path()</h2>
+					<h3 id="page_path">wpda_page_path()</h3>
 					<pre><code>
 ページパスを出力
 @see wpda_get_page_path()
@@ -524,7 +761,7 @@ $opt = Parser::data2html($opt);
 				?>
 				<h2>UA</h2>
 				<section>
-					<h3 id="get_ua">wpda_get_ua()</h2>
+					<h3 id="get_ua">wpda_get_ua()</h3>
 					<pre><code>
 UserAgentを返す
 @version 0.0.1
@@ -534,7 +771,7 @@ UserAgentを返す
 				</section>
 				<?php // ---------------------------------------------------- ?>
 				<section>
-					<h3 id="get_device_name">wpda_get_device_name()</h2>
+					<h3 id="get_device_name">wpda_get_device_name()</h3>
 					<pre><code>
 デバイス名を返す
 @version 0.0.1
@@ -544,7 +781,7 @@ UserAgentを返す
 				</section>
 				<?php // ---------------------------------------------------- ?>
 				<section>
-					<h3 id="is_smartphone">wpda_is_smartphone()</h2>
+					<h3 id="is_smartphone">wpda_is_smartphone()</h3>
 					<pre><code>
 スマホ環境かどうかを返す
 @version 0.0.1
@@ -554,7 +791,7 @@ UserAgentを返す
 				</section>
 				<?php // ---------------------------------------------------- ?>
 				<section>
-					<h3 id="is_tablet">wpda_is_tablet()</h2>
+					<h3 id="is_tablet">wpda_is_tablet()</h3>
 					<pre><code>
 タブレット環境かどうかを返す
 @version 0.0.1
@@ -564,7 +801,7 @@ UserAgentを返す
 				</section>
 				<?php // ---------------------------------------------------- ?>
 				<section>
-					<h3 id="is_pc">wpda_is_pc()</h2>
+					<h3 id="is_pc">wpda_is_pc()</h3>
 					<pre><code>
 PC環境かどうかを返す
 @version 0.0.1
@@ -579,7 +816,7 @@ PC環境かどうかを返す
 				?>
 				<h2>Helper</h2>
 				<section>
-					<h3 id="wpda_path2id">wpda_path2id( $path, $type='page' )</h2>
+					<h3 id="wpda_path2id">wpda_path2id( $path, $type='page' )</h3>
 					<pre><code>
 スラッグを渡すとIDを返す
 
@@ -590,13 +827,118 @@ PC環境かどうかを返す
 				</section>
 				<?php // ---------------------------------------------------- ?>
 				<section>
-					<h3 id="get_root_page">wpda_get_root_page( $id )</h2>
+					<h3 id="get_post_history">wpda_get_post_history( $id, $reverse = true )</h3>
+					<pre><code>
+引数で指定したページからそのページのルートとなるページまでの情報を配列で返す
+デフォルトでは最後に配列を反転させるのでルートページ->指定したページの順の配列になる
+@version 0.0.1
+
+@var    int|WP_Post $id
+@var    boolean     $reverse 結果を反転させるか
+@return array[]|false
+					</code></pre>
+				</section>
+				<?php // ---------------------------------------------------- ?>
+				<section>
+					<h3 id="get_root_post">wpda_get_root_post( $id )</h3>
 					<pre><code>
 固定ページや投稿タイプの一番上のページ(ルートとなるページ)のオブジェクトを返す
 @version 0.0.1
 
 @param  int|WP_Post $id
 @return WP_Post
+					</code></pre>
+				</section>
+				<?php // ---------------------------------------------------- ?>
+				<section>
+					<h3 id="get_term_history">wpda_get_term_history( $tax, $term, $reverse = true )</h3>
+					<pre><code>
+引数で指定したタームからそのタームのルートとなるタームまでの情報を配列で返す
+デフォルトでは最後に配列を反転させるのでルートターム->指定したタームの順の配列になる
+@version 0.0.1
+
+@var    string             $tax
+@var    string|int|WP_Term $term
+@var    boolean            $reverse 結果を反転させるか
+@return array[]|false
+					</code></pre>
+				</section>
+				<?php // ---------------------------------------------------- ?>
+				<section>
+					<h3 id="get_root_term">wpda_get_root_term( $tax, $term )</h3>
+					<pre><code>
+タームの一番上の親タームのオブジェクトを返す
+@version 0.0.1
+
+@var    string             $tax
+@var    string|int|WP_Term $term
+@return false
+					</code></pre>
+				</section>
+				<?php // ---------------------------------------------------- ?>
+				<section>
+					<h3 id="is_tax_ancestor_of">wpda_is_tax_ancestor_of( $descendant, $ancestor, $tax )</h3>
+					<pre><code>
+タームが他のタームの「先祖」タームであるかどうかをチェック
+@version 0.0.1
+
+@var    WP_Term|int|string $descendant 祖先
+@var    WP_Term|int|string $ancestor   先祖
+@var    string             $tax
+@return boolean
+					</code></pre>
+				</section>
+				<?php // ---------------------------------------------------- ?>
+				<section>
+					<h3 id="is_post_ancestor_of">wpda_is_post_ancestor_of( $descendant, $ancestor, $type = 'page' )</h3>
+					<pre><code>
+投稿が他の投稿の「先祖」投稿であるかどうかをチェック
+@access public
+@version 0.0.1
+
+@var    WP_Post|int|string  $descendant 祖先 stringの場合はパス
+@var    WP_Post|int|string  $ancestor   先祖 stringの場合はパス
+@var    string              $type       投稿タイプ $descendant,$ancestorにstring型を与えた場合のみ結果に影響
+@return boolean
+					</code></pre>
+				</section>
+				<?php // ---------------------------------------------------- ?>
+				<section>
+					<h3 id="is_child_post">wpda_is_child_post( $post, $type='page' )</h3>
+					<pre><code>
+子ページかチェック
+@version 0.0.1
+
+@param  WP_Post|int|string $post
+@param  string             $type 投稿タイプ $postにstring型を与えた場合のみ結果に影響
+@return boolean
+					</code></pre>
+				</section>
+				<?php // ---------------------------------------------------- ?>
+				<section>
+					<h3 id="has_child_page">wpda_has_child_page( $post, $type )</h3>
+					<pre><code>
+子ページを持っているかチェック
+@version 0.0.1
+
+@param WP_Post|int|string $post
+@param string             $type
+@return boolean
+					</code></pre>
+				</section>
+				<?php // ---------------------------------------------------- ?>
+				<section>
+					<h3 id="enqueue_style">wpda_enqueue_style( $handle, $src, $deps=false, $ver=false, $media='all' )</h3>
+					<pre><code>
+wp_enque_styleのラッパー　メディアクエリの設定を簡単にする
+@version 0.0.1
+
+@param  string           $handle ハンドル名
+@param  string           $src    パス
+@param  string[]|boolean $deps   依存ファイル(ハンドル名で指定)
+@param  string|boolean   $ver    バージョン
+@param  string           $media  メディアクエリ デフォルトはall
+@return void
 					</code></pre>
 				</section>
 				<?php // ---------------------------------------------------- ?>

@@ -195,7 +195,7 @@ function wpda_page( $dir_name, $url, $from, $path = '' ) {
  */
 function wpda_get_page_img_url( $from, $path = '' ) {
 	$img_dir_name = Path::prop('IMAGE_DIR_NAME');
-	return wpda_get_page( $img_dir_name, true, $from, $path );
+	return wpda_join( wpda_get_page( $img_dir_name, true, $from, $path ), [ 'last_slash' => false ] );
 }
 /**
  * ページ用画像のurlを出力する
@@ -217,7 +217,7 @@ function wpda_page_img_url( $from, $path = '' ) {
  */
 function wpda_get_page_css_url( $from, $path = '' ) {
 	$css_dir_name = Path::prop('CSS_DIR_NAME');
-	return wpda_get_page( $css_dir_name, true, $from, $path );
+	return wpda_join( wpda_get_page( $css_dir_name, true, $from, $path ), [ 'last_slash' => false ] );
 }
 /**
  * ページ用画像のurlを出力する
@@ -239,7 +239,7 @@ function wpda_page_css_url( $from, $path = '' ) {
  */
 function wpda_get_page_js_url( $from, $path = '' ) {
 	$js_dir_name = Path::prop('JS_DIR_NAME');
-	return wpda_get_page( $js_dir_name, true, $from, $path );
+	return wpda_join( wpda_get_page( $js_dir_name, true, $from, $path ), [ 'last_slash' => false ] );
 }
 /**
  * ページ用画像のurlを出力する
@@ -261,7 +261,7 @@ function wpda_page_js_url( $from, $path = '' ) {
  */
 function wpda_get_page_php_path( $from, $path = '' ) {
 	$php_dir_name = Path::prop('PHP_DIR_NAME');
-	return wpda_get_page( $php_dir_name, false, $from, $path );
+	return wpda_join( wpda_get_page( $php_dir_name, false, $from, $path ), [ 'last_slash' => false ] );
 }
 /**
  * ページ用画像のurlを出力する
@@ -484,11 +484,18 @@ function wpda_is_child_post( $post, $type='page' ) {
 function wpda_has_child_page( $post, $type ) {
    return Helper::has_child_page( $post, $type );
 }
-
-function get_media_queries() {
-	return Helper::get_media_queries(WPDA_MULTISITE, WPDA_DB_OPTIONS_NAME);
-}
-
-function wpda_enqueue_style( $handle, $src, $deps=false, $ver=false, $size=false, $media='all' ) {
-	Helper::enqueue_style( $handle, $src, $deps, $ver, $size, $media );
+// -----------------------------------------------------------------------------
+/**
+ * wp_enque_styleのラッパー　メディアクエリの設定を簡単にする
+ * @version 0.0.1
+ * 
+ * @param  string           $handle ハンドル名
+ * @param  string           $src    パス
+ * @param  string[]|boolean $deps   依存ファイル(ハンドル名で指定)
+ * @param  string|boolean   $ver    バージョン
+ * @param  string           $media  メディアクエリ デフォルトはall
+ * @return void
+ */
+function wpda_enqueue_style( $handle, $src, $deps=false, $ver=false, $media='all' ) {
+	Helper::enqueue_style( $handle, $src, $deps, $ver, $media );
 }
