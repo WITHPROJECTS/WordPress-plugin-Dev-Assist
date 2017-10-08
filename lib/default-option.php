@@ -22,6 +22,7 @@ $default_option = [
 	'canonical_block'      => true,              // カノニカルタグブロック
 	'alert'                => 'prod_env_enable', // アラート出力
 	'comment_alert'        => true,              // コメント許可状態時にアラートを出力
+	'pinback_alert'        => true,              // ピンバック・トラックバック許可
 	'file_permision_alert' => true,              // ファイル権限がおかしいときにアラートを出力
 ];
 

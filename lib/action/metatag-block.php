@@ -1,5 +1,7 @@
 <?php
 
+namespace dev_assist;
+
 remove_action( 'wp_head', 'wp_generator' );                           // meta generator
 remove_action( 'wp_head', 'wlwmanifest_link' );                       // Windows Live Writer
 remove_action( 'wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0 ); // rel=next | rel=prev 別途代替え

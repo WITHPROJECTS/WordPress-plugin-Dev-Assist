@@ -28,6 +28,7 @@ if ( isset($_POST['wpda_save']) ){
 	$opt['canonical_block']      = isset( $_POST['wpda_canonical_block'] ) ? true : false;      // カノニカルタグブロック
 	$opt['alert']                = $_POST['wpda_alert'];                                        // アラート出力
 	$opt['comment_alert']        = isset( $_POST['wpda_comment_alert'] ) ? true : false;        // コメント許可状態の場合アラート
+	$opt['pinback_alert']        = isset( $_POST['wpda_pinback_alert'] ) ? true : false;        // ピンバック・トラックバック許可
 	$opt['file_permision_alert'] = isset( $_POST['wpda_file_permision_alert'] ) ? true : false; // 適切なファイル権限では無い場合アラート
 
 	$opt = Parser::form2data($opt);
@@ -179,6 +180,10 @@ $opt = Parser::data2html($opt);
 					<tr class="checkbox-item">
 						<th>コメント許可状態</th>
 						<td><input type="checkbox" name="wpda_comment_alert" <?php checked(true, $opt['comment_alert']); ?>></td>
+					</tr>
+					<tr class="checkbox-item">
+						<th>ピンバック・トラックバック受付</th>
+						<td><input type="checkbox" name="wpda_pinback_alert" <?php checked(true, $opt['pinback_alert']); ?>></td>
 					</tr>
 					<tr class="checkbox-item">
 						<th>ファイル権限</th>

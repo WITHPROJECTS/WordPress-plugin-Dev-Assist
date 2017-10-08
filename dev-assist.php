@@ -114,13 +114,14 @@ add_action('deactivated_plugin', function() {
 } );
 
 // -----------------------------------------------------------------------------
-// Dev Assist 無効化時の処理
+// 各処理
 //
 require_once( WPDA_DIR.'lib/action/redirect.php' );      // リダイレクト
 require_once( WPDA_DIR.'lib/action/metatag-block.php' ); // ブロック
 require_once( WPDA_DIR.'lib/action/admin.php' );         // 管理画面
-require_once( WPDA_DIR.'lib/action/alert.php' );         // アラート
 require_once( WPDA_DIR.'lib/action/other.php' );         // その他
+// アラート
+if( is_admin() && $opt['alert'] !== 'disable' ) require_once( WPDA_DIR.'lib/action/alert.php' );
 
 
 // =============================================================================
