@@ -2,7 +2,7 @@
 /*
 Plugin Name: Dev Assit
 Description: サイト制作をサポートする設定、関数、ショートコードを提供
-Version: 0.0.1
+Version: 0.0.2
 Author: WITHPROJECTS inc.
 Author URI: http://www.withprojects.co.jp/
 */
@@ -14,7 +14,7 @@ require_once(__dir__.'/lib/default-option.php');
 $plgin_data = get_file_data( __FILE__, ['version' => 'Version'] );
 $multisite  = defined('MULTISITE') && MULTISITE ? true : false;
 
-define( 'WPDA_VERSION',         '0.0.1' );
+define( 'WPDA_VERSION',         $plgin_data['version'] );
 define( 'WPDA_DEFAULT_OPTIONS', $default_option );
 define( 'WPDA_DB_OPTIONS_NAME', 'dev-assist_options' );
 define( 'WPDA_DIR',             plugin_dir_path( __FILE__ ) );
