@@ -1,8 +1,8 @@
 <?php
 /*
-Plugin Name: Dev Assit
+Plugin Name: Dev Assist
 Description: サイト制作をサポートする設定、関数、ショートコードを提供
-Version: 0.0.4
+Version: 0.0.5
 Author: WITHPROJECTS inc.
 Author URI: http://www.withprojects.co.jp/
 */

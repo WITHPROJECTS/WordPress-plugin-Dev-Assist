@@ -40,9 +40,6 @@ $opt = Parser::data2html($opt);
 
 ?>
 <div class="wrap">
-	<?php
-		// var_dump($PATH);
-	?>
 	<h1>Dev Assist v<?php echo WPDA_VERSION; ?></h1>
 	<div class="wpda-reset">
 		<ul class="wpda-tab">
