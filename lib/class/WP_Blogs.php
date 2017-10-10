@@ -52,7 +52,7 @@ class WP_Blogs {
 			$blogs_data['root'] = [
 				'blog_id'    => $root_id,
 				'theme_name' => basename( get_stylesheet_directory_uri() ),
-				'url'        => get_blog_option( $blog_id, 'home' )
+				'url'        => get_blog_option( $root_id, 'home' )
 			];
 			restore_current_blog();
 		}
