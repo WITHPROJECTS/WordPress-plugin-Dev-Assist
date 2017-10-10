@@ -2,7 +2,7 @@
 /*
 Plugin Name: Dev Assit
 Description: サイト制作をサポートする設定、関数、ショートコードを提供
-Version: 0.0.3
+Version: 0.0.4
 Author: WITHPROJECTS inc.
 Author URI: http://www.withprojects.co.jp/
 */

@@ -1,6 +1,6 @@
 {
   "name": "dev-assist",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "WordPress theme developping support plugin",
   "private": true,
   "engines": {
