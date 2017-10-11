@@ -297,7 +297,7 @@ function wpda_blog_url( $blog_name = 'active' ) {
 }
 /**
  * アクティブになっているテーマの名前が引数のものか
- * @version 0.0.2
+ * @version 0.1.0
  * 
  * @var    string  $name
  * @return boolean
