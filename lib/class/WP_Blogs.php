@@ -64,6 +64,11 @@ class WP_Blogs {
 				'url'        => get_bloginfo( 'url' )
 			];
 		}
+		$blogs_data['active'] = [
+			'blog_id'    => get_current_blog_id(),
+			'theme_name' => basename( get_stylesheet_directory_uri() ),
+			'url'        => get_bloginfo( 'url' )
+		];
 		define( 'ROOT_BLOG_THEME', $blogs_data['root']['theme_name'] );
 		self::$blogs = $blogs_data;
 	}
@@ -120,5 +125,4 @@ class WP_Blogs {
 	public function get_root_blog_data() {
 		return self::get_blog_data( 'root' );
 	}
-
 }

@@ -478,6 +478,12 @@ $opt = Parser::data2html($opt);
 						<li><a href="#enqueue_style">wpda_enqueue_style()</a></li>
 					</ul>
 				</li>
+				<li>
+					<a href="">Other</a>
+					<ul>
+						<li><a href="#is_active_theme_name">wpda_is_active_theme_name()</a></li>
+					</ul>
+				</li>
 			</ul>
 			<div>
 				<h2>Path</h2>
@@ -941,6 +947,17 @@ wp_enque_styleのラッパー　メディアクエリの設定を簡単にする
 @param  string|boolean   $ver    バージョン
 @param  string           $media  メディアクエリ デフォルトはall
 @return void
+					</code></pre>
+				</section>
+				<?php // ---------------------------------------------------- ?>
+				<section>
+					<h3 id="enqueue_style">wpda_is_active_theme_name( $name )</h3>
+					<pre><code>
+アクティブになっているテーマの名前が引数のものか
+@version 0.0.2
+
+@var    string  $name
+@return boolean
 					</code></pre>
 				</section>
 				<?php // ---------------------------------------------------- ?>

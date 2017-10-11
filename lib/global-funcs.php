@@ -295,6 +295,19 @@ function wpda_get_blog_url( $blog_name = 'active' ) {
 function wpda_blog_url( $blog_name = 'active' ) {
 	echo wpda_get_blog_url( $blog_name );
 }
+/**
+ * アクティブになっているテーマの名前が引数のものか
+ * @version 0.0.2
+ * 
+ * @var    string  $name
+ * @return boolean
+ */
+function wpda_is_active_theme_name( $name ) {
+	// var_dump(get_template());
+	$blogs = Path::prop( 'blogs' );
+	$blog  = $blogs->get_blog_data( 'active' );
+	return $blog['theme_name'] === $name;
+}
 // -----------------------------------------------------------------------------
 /**
  * ページパスを返す
