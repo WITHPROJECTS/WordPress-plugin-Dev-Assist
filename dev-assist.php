@@ -2,7 +2,7 @@
 /*
 Plugin Name: Dev Assist
 Description: サイト制作をサポートする設定、関数、ショートコードを提供
-Version: 0.1.1
+Version: 0.1.2
 Author: WITHPROJECTS inc.
 Author URI: http://www.withprojects.co.jp/
 */
@@ -18,7 +18,7 @@ define( 'WPDA_VERSION',         $plgin_data['version'] );
 define( 'WPDA_DEFAULT_OPTIONS', $default_option );
 define( 'WPDA_DB_OPTIONS_NAME', 'dev-assist_options' );
 define( 'WPDA_DIR',             plugin_dir_path( __FILE__ ) );
-define( 'WPDA_PATH',            plugins_url('dev-assist/') );
+define( 'WPDA_URL',             plugins_url( basename(__dir__).'/' ) );
 define( 'WPDA_MULTISITE',       $multisite );
 
 require_once( WPDA_DIR.'lib/class/Parser.php' );
@@ -56,19 +56,19 @@ require_once( WPDA_DIR.'lib/shortcode.php' );    // ショートコードの定�
 //
 // 専用CSS/JS追加
 add_action( 'admin_enqueue_scripts', function(){
-	wp_enqueue_style( 'dev-assist', WPDA_PATH.'asset/build/css/dev-assist.css' );
-	wp_enqueue_script( 'dev-assist', WPDA_PATH.'asset/build/js/dev-assist.js', ['jquery'], false, true );
+	wp_enqueue_style( 'dev-assist', WPDA_URL.'asset/build/css/dev-assist.css' );
+	wp_enqueue_script( 'dev-assist', WPDA_URL.'asset/build/js/dev-assist.js', ['jquery'], false, true );
 } );
 // マルチサイトの場合の処理
 if ( defined('MULTISITE') && MULTISITE ) {
 	// 管理画面へページ追加
 	add_action( 'network_admin_menu', function() {
 		add_submenu_page(
-			'settings.php',   // 親メニューのスラッグ
-			'Dev Assist',     // サブメニューページのタイトル
-			'Dev Assist',     // プルダウンに表示されるメニュー名
+			'settings.php',  // 親メニューのスラッグ
+			'Dev Assist',    // サブメニューページのタイトル
+			'Dev Assist',    // プルダウンに表示されるメニュー名
 			'administrator', // サブメニューの権限
-			'dev-assist',     // サブメニューのスラッグ
+			'dev-assist',    // サブメニューのスラッグ
 			function() {
 				include_once( WPDA_DIR.'lib/page.php' );
 			}
@@ -79,8 +79,8 @@ if ( defined('MULTISITE') && MULTISITE ) {
 else {
 	// 専用CSS/JS追加
 	add_action( 'admin_enqueue_scripts', function(){
-		wp_enqueue_style( 'dev-assist', WPDA_PATH.'asset/build/css/dev-assist.css' );
-		wp_enqueue_script( 'dev-assist', WPDA_PATH.'asset/build/js/dev-assist.js', ['jquery'], true );
+		wp_enqueue_style( 'dev-assist', WPDA_URL.'asset/build/css/dev-assist.css' );
+		wp_enqueue_script( 'dev-assist', WPDA_URL.'asset/build/js/dev-assist.js', ['jquery'], true );
 	} );
 	// 管理画面へページ追加
 	add_action( 'admin_menu', function() {
