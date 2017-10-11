@@ -954,7 +954,7 @@ wp_enque_styleのラッパー　メディアクエリの設定を簡単にする
 					<h3 id="enqueue_style">wpda_is_active_theme_name( $name )</h3>
 					<pre><code>
 アクティブになっているテーマの名前が引数のものか
-@version 0.0.2
+@version 0.1.0
 
 @var    string  $name
 @return boolean
