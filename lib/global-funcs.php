@@ -48,6 +48,62 @@ function wpda_get_src( $param ) {
 function wpda_src( $param ) {
 	Path::src( $param );
 }
+
+// -----------------------------------------------------------------------------
+/**
+ * ソースパスを返す
+ * @version 0.2.0
+ *
+ * @var string $where    "theme"か"user" 初期値 "theme"
+ * @var string $dir_name 動作設定で設定したディレクトリ名 初期値
+ * @var string $add_path 追加パス
+ * @var string $blog     対象のブログ 初期値 "active"
+ * @return string
+ */
+function wpda_get_src_path( $where = 'theme', $dir_name = '', $add_path = '', $blog = 'active' ) {
+   return Path::join( Path::get_src([
+	   'uri'   => false,
+	   'where' => $where,
+	   'blog'  => $blog,
+	   'path'  => $dir_name
+   ]), $add_path );
+}
+/**
+ * ソースパスを出力する
+ * @version 0.2.0
+ * @see wpda_get_src_path()
+ */
+function wpda_src_path( $where = 'theme', $dir_name = '', $add_path = '', $blog = 'active' ) {
+	echo wpda_get_src_path( $where, $dir_name, $add_path );
+}
+// -----------------------------------------------------------------------------
+/**
+ * ソースURLを返す
+ * @version 0.2.0
+ *
+ * @var string $where    "theme"か"user" 初期値 "theme"
+ * @var string $dir_name 動作設定で設定したディレクトリ名 初期値
+ * @var string $add_path 追加パス
+ * @var string $blog     対象のブログ 初期値 'active'
+ * @return string
+ */
+function wpda_get_src_url( $where = 'theme', $dir_name = '', $add_path = '', $blog = 'active' ) {
+   return Path::join( Path::get_src([
+	   'uri'   => true,
+	   'where' => $where,
+	   'blog'  => $blog,
+	   'path'  => $dir_name
+   ]), $add_path );
+}
+/**
+ * ソースURLを出力する
+ * @version 0.2.0
+ * @see wpda_get_src_url()
+ */
+function wpda_src_url( $where = 'theme', $dir_name = '', $add_path = '', $blog = 'active' ) {
+	echo wpda_get_src_url( $where, $dir_name, $add_path, $blog );
+}
+
 // -----------------------------------------------------------------------------
 /**
  * テーマのURLを返す
