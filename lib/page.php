@@ -527,19 +527,18 @@ $opt = Parser::data2html($opt);
 				</section>
 				<?php // ---------------------------------------------------- ?>
 				<section>
-					<h3 id="get_theme_url">wpda_get_theme_url( $path='', $blog='active' )</h3>
+					<h3 id="get_theme_url">wpda_get_theme_url( $blog='active' )</h3>
 					<pre><code>
 テーマのURLを返す
 @version 0.0.1
 
-@var    string $path
 @var    string $blog
 @return string
 					</code></pre>
 				</section>
 				<?php // ---------------------------------------------------- ?>
 				<section>
-					<h3 id="theme_url">wpda_theme_url( $path='', $blog='active' )</h3>
+					<h3 id="theme_url">wpda_theme_url( $blog='active' )</h3>
 					<pre><code>
 テーマのURLを出力
 @version 0.0.1
@@ -548,19 +547,18 @@ $opt = Parser::data2html($opt);
 				</section>
 				<?php // ---------------------------------------------------- ?>
 				<section>
-					<h3 id="get_theme_path">wpda_get_theme_path( $path='', $blog='active' )</h3>
+					<h3 id="get_theme_path">wpda_get_theme_path( $blog='active' )</h3>
 					<pre><code>
 テーマのパスを返す
 @version 0.0.1
 
-@var    string $path
 @var    string $blog
 @return string
 					</code></pre>
 				</section>
 				<?php // ---------------------------------------------------- ?>
 				<section>
-					<h3 id="theme_path">wpda_theme_path( $path='', $blog='active' )</h3>
+					<h3 id="theme_path">wpda_theme_path( $blog='active' )</h3>
 					<pre><code>
 テーマへのパスを出力
 @version 0.0.1
@@ -570,19 +568,18 @@ $opt = Parser::data2html($opt);
 				</section>
 				<?php // ---------------------------------------------------- ?>
 				<section>
-					<h3 id="get_user_url">wpda_get_user_url( $path='', $blog='active' )</h3>
+					<h3 id="get_user_url">wpda_get_user_url( $blog='active' )</h3>
 					<pre><code>
 ユーザーディレクトリのURLを返す
 @version 0.0.1
 
-@var    string $path
 @var    string $blog
 @return string
 					</code></pre>
 				</section>
 				<?php // ---------------------------------------------------- ?>
 				<section>
-					<h3 id="user_url">wpda_user_url( $path='',  $blog='active' )</h3>
+					<h3 id="user_url">wpda_user_url( $blog='active' )</h3>
 					<pre><code>
 ユーザーディレクトリのURLを出力
 @version 0.0.1
@@ -591,19 +588,18 @@ $opt = Parser::data2html($opt);
 				</section>
 				<?php // ---------------------------------------------------- ?>
 				<section>
-					<h3 id="get_user_path">wpda_get_user_path( $path='',  $blog='active' )</h3>
+					<h3 id="get_user_path">wpda_get_user_path( $blog='active' )</h3>
 					<pre><code>
 ユーザーディレクトリのパスを返す
 @version 0.0.1
 
-@var    string $path
 @var    string $blog
 @return string
 					</code></pre>
 				</section>
 				<?php // ---------------------------------------------------- ?>
 				<section>
-					<h3 id="user_path">wpda_user_path( $path='', $blog='active' )</h3>
+					<h3 id="user_path">wpda_user_path( $blog='active' )</h3>
 					<pre><code>
 ユーザーディレクトリのパスを出力
 @version 0.0.1
