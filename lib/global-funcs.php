@@ -54,24 +54,21 @@ function wpda_src( $param ) {
  * @version 0.0.1
  *
  * @var    string $blog
- * @var    string $path
  * @return string
  */
-function wpda_get_theme_url( $path = '',  $blog = 'active' ) {
-	return Path::get_src( [
-		'uri'   => true,
-		'where' => 'theme',
-		'blog'  => $blog,
-		'path'  => $path
-	] );
+function wpda_get_theme_url( $blog = 'active' ) {
+	$root  = get_theme_root_uri();
+	$blogs = Path::prop( 'blogs' );
+	$blog  = $blogs->get_blog_data( $blog );
+	return wpda_join($root, $blog['theme_name'] );
 }
 /**
  * テーマのURLを出力
  * @version 0.0.1
  * @see wpda_get_theme_url()
  */
-function wpda_theme_url( $path = '',  $blog = 'active' ) {
-	echo wpda_get_theme_url( $path, $blog );
+function wpda_theme_url( $blog = 'active' ) {
+	echo wpda_get_theme_url( $blog );
 }
 // -----------------------------------------------------------------------------
 /**
@@ -79,16 +76,13 @@ function wpda_theme_url( $path = '',  $blog = 'active' ) {
  * @version 0.0.1
  *
  * @var    string $blog
- * @var    string $path
  * @return string
  */
-function wpda_get_theme_path( $path = '',  $blog = 'active' ) {
-	return Path::get_src( [
-		'uri'   => false,
-		'where' => 'theme',
-		'blog'  => $blog,
-		'path'  => $path
-	] );
+function wpda_get_theme_path( $blog = 'active' ) {
+	$root  = get_theme_root();
+	$blogs = Path::prop( 'blogs' );
+	$blog  = $blogs->get_blog_data( $blog );
+	return wpda_join($root, $blog['theme_name'] );
 }
 /**
  * テーマへのパスを出力
@@ -96,8 +90,8 @@ function wpda_get_theme_path( $path = '',  $blog = 'active' ) {
  *
  * @see wpda_get_theme_path()
  */
-function wpda_theme_path( $path = '',  $blog = 'active' ) {
-	echo wpda_get_theme_path( $path, $blog );
+function wpda_theme_path( $blog = 'active' ) {
+	echo wpda_get_theme_path( $blog );
 }
 // -----------------------------------------------------------------------------
 /**
@@ -105,15 +99,14 @@ function wpda_theme_path( $path = '',  $blog = 'active' ) {
  * @version 0.0.1
  *
  * @var    string $blog
- * @var    string $path
  * @return string
  */
-function wpda_get_user_url( $path = '',  $blog = 'active' ) {
+function wpda_get_user_url( $blog = 'active' ) {
 	return Path::get_src( [
 		'uri'   => true,
 		'where' => 'user',
 		'blog'  => $blog,
-		'path'  => $path
+		'path'  => ''
 	] );
 }
 /**
@@ -122,8 +115,8 @@ function wpda_get_user_url( $path = '',  $blog = 'active' ) {
  *
  * @see wpda_get_user_url()
  */
-function wpda_user_url( $path = '',  $blog = 'active' ) {
-	echo wpda_get_user_url( $path, $blog );
+function wpda_user_url( $blog = 'active' ) {
+	echo wpda_get_user_url( $blog );
 }
 // -----------------------------------------------------------------------------
 /**
@@ -131,15 +124,14 @@ function wpda_user_url( $path = '',  $blog = 'active' ) {
  * @version 0.0.1
  *
  * @var    string $blog
- * @var    string $path
  * @return string
  */
-function wpda_get_user_path( $path = '',  $blog = 'active' ) {
+function wpda_get_user_path( $blog = 'active' ) {
 	return Path::get_src( [
 		'uri'   => false,
 		'where' => 'user',
 		'blog'  => $blog,
-		'path'  => $path
+		'path'  => ''
 	] );
 }
 /**
@@ -148,8 +140,8 @@ function wpda_get_user_path( $path = '',  $blog = 'active' ) {
  *
  * @see wpda_get_user_path()
  */
-function wpda_user_path( $path = '',  $blog = 'active' ) {
-	echo wpda_get_user_path( $path, $blog );
+function wpda_user_path( $blog = 'active' ) {
+	echo wpda_get_user_path( $blog );
 }
 // -----------------------------------------------------------------------------
 /**
