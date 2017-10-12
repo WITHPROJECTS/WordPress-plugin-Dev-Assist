@@ -429,6 +429,10 @@ $opt = Parser::data2html($opt);
 						<li><a href="#join">wpda_join()</a></li>
 						<li><a href="#get_src">wpda_get_src()</a></li>
 						<li><a href="#src">wpda_src()</a></li>
+						<li><a href="#get_src_path">wpda_get_src_path()</a></li>
+						<li><a href="#src_path">wpda_src_path()</a></li>
+						<li><a href="#get_src_url">wpda_get_src_url()</a></li>
+						<li><a href="#src_url">wpda_src_url()</a></li>
 						<li><a href="#get_theme_url">wpda_get_theme_url()</a></li>
 						<li><a href="#theme_url">wpda_theme_url()</a></li>
 						<li><a href="#get_theme_path">wpda_get_theme_path()</a></li>
@@ -523,6 +527,54 @@ $opt = Parser::data2html($opt);
 指定されたパスかurlを出力
 @version 0.0.1
 @see wpda_get_src()
+					</code></pre>
+				</section>
+				<?php // ---------------------------------------------------- ?>
+				<section>
+					<h3 id="get_src_path">wpda_get_src_path( $where = 'theme', $dir_name = '', $add_path = '', $blog = 'active' )</h3>
+					<pre><code>
+ソースパスを返す
+@version 0.2.0
+
+@var string $where    "theme"か"user" 初期値 "theme"
+@var string $dir_name 動作設定で設定したディレクトリ名 初期値
+@var string $add_path 追加パス
+@var string $blog     対象のブログ 初期値 "active"
+@return string
+					</code></pre>
+				</section>
+				<?php // ---------------------------------------------------- ?>
+				<section>
+					<h3 id="src_path">wpda_src_path( $where = 'theme', $dir_name = '', $add_path = '', $blog = 'active' )</h3>
+					<pre><code>
+ソースパスを出力する
+@version 0.2.0
+
+@see wpda_get_src_path()
+					</code></pre>
+				</section>
+				<?php // ---------------------------------------------------- ?>
+				<section>
+					<h3 id="get_src_url">wpda_get_src_url( $where = 'theme', $dir_name = '', $add_path = '', $blog = 'active' )</h3>
+					<pre><code>
+ソースURLを返す
+@version 0.2.0
+
+@var string $where    "theme"か"user" 初期値 "theme"
+@var string $dir_name 動作設定で設定したディレクトリ名 初期値
+@var string $add_path 追加パス
+@var string $blog     対象のブログ 初期値 'active'
+@return string
+					</code></pre>
+				</section>
+				<?php // ---------------------------------------------------- ?>
+				<section>
+					<h3 id="src_url">wpda_src_url( $where = 'theme', $dir_name = '', $add_path = '', $blog = 'active' )</h3>
+					<pre><code>
+ソースURLを出力する
+@version 0.2.0
+
+@see wpda_get_src_url()
 					</code></pre>
 				</section>
 				<?php // ---------------------------------------------------- ?>
