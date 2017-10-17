@@ -380,6 +380,64 @@ $opt = Parser::data2html($opt);
 				</table>
 			</section>
 			<section>
+				<h2>[page-pdf-url file="" from=""]</h2>
+				<p class="desc-text">ページ用PDFファイルのurlを出力する</p>
+				<table>
+					<thead><tr>
+						<th>オプション</th>
+						<th>必須</th>
+						<th>初期値</th>
+						<th>備考</th>
+					</tr></thead>
+					<tbody>
+					<tr>
+						<td>file</td>
+						<td>◯</td>
+						<td></td>
+						<td>ファイルまでのパス</td>
+					</tr>
+					<tr>
+						<td>from</td>
+						<td></td>
+						<td>'theme'</td>
+						<td>検索対象。themeかuser</td>
+					</tr>
+					</tbody>
+				</table>
+			</section>
+			<section>
+				<h2>[page-file-url file_type="" file="" from=""]</h2>
+				<p class="desc-text">ページ用ファイルのurlを出力する</p>
+				<table>
+					<thead><tr>
+						<th>オプション</th>
+						<th>必須</th>
+						<th>初期値</th>
+						<th>備考</th>
+					</tr></thead>
+					<tbody>
+					<tr>
+						<td>file_type</td>
+						<td>◯</td>
+						<td></td>
+						<td>ファイルディレクトリ名</td>
+					</tr>
+					<tr>
+						<td>file</td>
+						<td>◯</td>
+						<td></td>
+						<td>ファイルまでのパス</td>
+					</tr>
+					<tr>
+						<td>from</td>
+						<td></td>
+						<td>'theme'</td>
+						<td>検索対象。themeかuser</td>
+					</tr>
+					</tbody>
+				</table>
+			</section>
+			<section>
 				<h2>[php-include type="" blog="" file="" from=""]</h2>
 				<p class="desc-text">PHPファイルを読み込み</p>
 				<table>
