@@ -141,6 +141,38 @@ add_shortcode( 'page-img-url', function( $arg ) {
 	return wpda_get_page_img_url( $from, $file );
 } );
 /**
+ * ページ用PDFファイルのurlを出力する
+ * @version 0.3.0
+ * 
+ * @var    string $from
+ * @var    string $file
+ * @return string
+ */
+add_shortcode( 'page-pdf-url', function( $arg ) {	
+	extract( shortcode_atts([
+		'from'      => 'theme',
+		'file'      => ''
+	], $arg ) );
+	return wpda_get_page( 'pdf', true, $from, $file );
+} );
+/**
+ * ページ用ファイルのurlを出力する
+ * @version 0.3.0
+ * 
+ * @var    string $file_type
+ * @var    string $from
+ * @var    string $file
+ * @return string
+ */
+add_shortcode( 'page-file-url', function( $arg ) {	
+	extract( shortcode_atts([
+		'file_type' => '',
+		'from'      => 'theme',
+		'file'      => ''
+	], $arg ) );
+	return wpda_get_page( $file_type, true, $from, $file );
+} );
+/**
  * PHPファイルを読み込む
  * @version 0.0.1 
  *
